@@ -93,5 +93,60 @@
       { "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y", "title": "FULL MOON FEATURES FULL MOVIES" }
     ],
     "queries": [ "collection:feature_films AND date:[1970-01-01 TO 1999-12-31]" ]
+  },
+
+  {
+    "number": 32, "name": "COMEDY",
+    "youtube": [
+      { "id": "PLsZQnDqnebk5HQZ7Wh5dblxRumNWbzJJC", "title": "POPCORNFLIX COMEDY MOVIES" },
+      { "id": "PLsZQnDqnebk57K1G7_cO7z_Zqzyg3X84R", "title": "POPCORNFLIX ROMANTIC COMEDIES" }
+    ],
+    "queries": [ "collection:feature_films AND subject:comedy", "collection:silent_films AND subject:comedy" ]
+  },
+  {
+    "number": 33, "name": "HORROR",
+    "youtube": [
+      { "id": "PLsZQnDqnebk4P4a5SQHveJQWkooCkY8sn", "title": "POPCORNFLIX HORROR MOVIES" },
+      { "id": "UUv60jacPSiFH49SAT6nu7hQ", "title": "FILMRISE HORROR" }
+    ],
+    "queries": [ "collection:SciFi_Horror AND subject:horror", "collection:SciFi_Horror" ]
+  },
+  {
+    "number": 34, "name": "ACTION",
+    "youtube": [
+      { "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg", "title": "POPCORNFLIX ACTION MOVIES" },
+      { "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L", "title": "POPCORNFLIX THRILLERS" }
+    ],
+    "queries": [ "collection:feature_films AND (subject:action OR subject:adventure)", "collection:feature_films" ]
+  },
+  {
+    "number": 35, "name": "SCI-FI MOVIES",
+    "youtube": [
+      { "id": "PLsZQnDqnebk7lTDI6aYGdSVf81_diEKMo", "title": "POPCORNFLIX SCI-FI MOVIES" }
+    ],
+    "queries": [ "collection:SciFi_Horror AND subject:\"science fiction\"", "collection:SciFi_Horror" ]
+  },
+  {
+    "number": 36, "name": "HALLOWEEN",
+    "youtube": [
+      { "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y", "title": "FULL MOON FEATURES HALLOWEEN NIGHT" },
+      { "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L", "title": "POPCORNFLIX CHILLERS + THRILLERS" }
+    ],
+    "queries": [
+      "(halloween) AND (cartoon OR film OR movie OR special)",
+      "collection:SciFi_Horror"
+    ]
+  },
+  {
+    "number": 37, "name": "CHRISTMAS",
+    "youtube": [
+      { "id": "PLsZQnDqnebk65mJK8wB63qGidYymXFVkE", "title": "POPCORNFLIX CHRISTMAS MOVIES" },
+      { "id": "PLYCGB2FR2jUrBFcXL5zF1fW4I-3Y-y2hq", "title": "FILMRISE HOLIDAY MOVIES" },
+      { "id": "PLGEvQOL-yCoH93W0d_PnkvwV-k8NL6MRn", "title": "PUBLIC DOMAIN CHRISTMAS CLASSICS" }
+    ],
+    "queries": [
+      "(christmas OR xmas) AND (cartoon OR film OR movie OR special)",
+      "(santa OR \"holiday special\") AND (cartoon OR film OR movie)"
+    ]
   }
 ]

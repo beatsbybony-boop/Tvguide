@@ -23,6 +23,13 @@ Channel 14 (CN Official) plays the official Cartoon Network YouTube channel, and
 channel 31 (80s-90s Films) plays a free 1980s movie playlist plus Full Moon
 Features' official full-movie playlist.
 
+Channels 32-37 are genre movie channels: Comedy, Horror, Action, Sci-Fi Movies,
+Halloween and Christmas, built from free-movie playlists (Popcornflix, FilmRise,
+Full Moon Features, public-domain collections) with Internet Archive fallbacks.
+
+To add your own YouTube playlist as a channel, add an entry to `channels.json` with
+the playlist ID (the part after `list=`). The playlist must be Public or Unlisted.
+
 YouTube requires embedded players to identify the app, so the player page is loaded
 with the app ID (`https://<applicationId>`) as its base URL. If you change the
 `applicationId` in `app/build.gradle.kts`, that updates automatically.
