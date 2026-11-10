@@ -1,0 +1,10 @@
+[
+  { "number": 2,  "name": "TOONS",      "query": "collection:classic_cartoons" },
+  { "number": 3,  "name": "MOVIES",     "query": "collection:feature_films" },
+  { "number": 4,  "name": "SCI-FI",     "query": "collection:SciFi_Horror" },
+  { "number": 5,  "name": "CLASSIC TV", "query": "collection:classic_tv" },
+  { "number": 7,  "name": "SILENTS",    "query": "collection:silent_films" },
+  { "number": 9,  "name": "ARCHIVE",    "query": "collection:prelinger" },
+  { "number": 11, "name": "SPACE",      "query": "collection:nasa" },
+  { "number": 13, "name": "NEWS",       "query": "collection:newsandpublicaffairs" }
+]
