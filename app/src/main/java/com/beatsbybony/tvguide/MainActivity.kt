@@ -109,7 +109,7 @@ class MainActivity : Activity() {
 
         guide.onLayoutChanged = { root.post { layoutVideo() } }
         web.onPlaying = { title -> onYoutubePlaying(title) }
-        web.onFailed = { youtubeFailed() }
+        web.onFailed = { reason -> youtubeFailed(reason) }
 
         val exo = ExoPlayer.Builder(this).build()
         exo.setVideoSurfaceView(surface)
@@ -228,7 +228,7 @@ class MainActivity : Activity() {
      * YouTube wouldn't play this playlist (usually because the uploader blocks embedding).
      * If the channel has another playlist, use that; otherwise fall back to Internet Archive mixes.
      */
-    private fun youtubeFailed() {
+    private fun youtubeFailed(reason: String) {
         if (!ytActive || playingIndex < 0) return
         val ch = channels[playingIndex]
         val cur = currentProgram
@@ -239,6 +239,11 @@ class MainActivity : Activity() {
         if (remaining.isNotEmpty()) {
             ch.programs = remaining
             tune(playingIndex)
+            guide.showBanner(
+                "CH " + ch.number + "  " + ch.name,
+                "PLAYLIST SKIPPED (" + reason + ")",
+                8000
+            )
             return
         }
         if (ch.youtubeFailed) return
@@ -247,9 +252,9 @@ class MainActivity : Activity() {
         ch.programs = emptyList()
         ch.loaded = false
         guide.showBanner(
-            "CH " + ch.number + "  " + ch.name,
-            "YOUTUBE BLOCKED - LOADING ARCHIVE VIDEOS",
-            8000
+            "YOUTUBE FAILED: " + reason,
+            "LOADING ARCHIVE VIDEOS INSTEAD...",
+            10000
         )
         loader.loadArchiveFallback(ch)
         guide.invalidate()

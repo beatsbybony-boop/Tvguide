@@ -68,5 +68,15 @@
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND date:[1990-01-01 TO 1999-12-31]",
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND (1990s OR \"90s\" OR 1994 OR 1995 OR 1996 OR 1997 OR 1998)"
     ]
+  },
+
+  {
+    "number": 30, "name": "FREE MOVIES",
+    "youtube": [
+      { "id": "PLscnkx6FrkeMTTSBZqmsC6Khech54P2bs", "title": "FILMRISE FREE MOVIES" },
+      { "id": "PLGEvQOL-yCoEWYgfMmozHngZtmRPbUpKX", "title": "PUBLIC DOMAIN MOVIES" },
+      { "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg", "title": "POPCORNFLIX ACTION MOVIES" }
+    ],
+    "queries": [ "collection:feature_films" ]
   }
 ]

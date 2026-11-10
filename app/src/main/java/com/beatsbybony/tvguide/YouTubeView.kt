@@ -12,8 +12,11 @@ import android.webkit.WebViewClient
 /**
  * Plays a YouTube playlist through YouTube's own embedded player (the official
  * IFrame API), shuffled and starting at a random video. Videos that can't be
- * embedded are skipped; if the whole playlist fails, [onFailed] is called so the
- * app can fall back to another source.
+ * embedded are skipped; if the whole playlist fails, [onFailed] is called with a
+ * short reason so the app can fall back to another source.
+ *
+ * YouTube requires embedded players to identify the app: the page's base URL (which
+ * becomes the HTTP Referer) must be https:// followed by the app ID.
  */
 @SuppressLint("SetJavaScriptEnabled")
 class YouTubeView(context: Context) : WebView(context) {
@@ -21,20 +24,30 @@ class YouTubeView(context: Context) : WebView(context) {
     /** Called with the title each time a new video starts playing. */
     var onPlaying: ((String) -> Unit)? = null
 
-    /** Called when the playlist can't be played at all. */
-    var onFailed: (() -> Unit)? = null
+    /** Called with a short reason when the playlist can't be played at all. */
+    var onFailed: ((String) -> Unit)? = null
 
     private val ui = Handler(Looper.getMainLooper())
+    private val baseUrl = "https://" + context.packageName
+
+    /** If nothing starts playing within this time, treat the playlist as failed. */
+    private val watchdog = Runnable { onFailed?.invoke("TIMEOUT - NOTHING PLAYED") }
 
     inner class Bridge {
         @JavascriptInterface
         fun playing(title: String) {
-            ui.post { onPlaying?.invoke(title) }
+            ui.post {
+                ui.removeCallbacks(watchdog)
+                onPlaying?.invoke(title)
+            }
         }
 
         @JavascriptInterface
         fun failed(code: Int) {
-            ui.post { onFailed?.invoke() }
+            ui.post {
+                ui.removeCallbacks(watchdog)
+                onFailed?.invoke("YOUTUBE ERROR " + code)
+            }
         }
     }
 
@@ -46,13 +59,29 @@ class YouTubeView(context: Context) : WebView(context) {
         settings.domStorageEnabled = true
         settings.mediaPlaybackRequiresUserGesture = false
         addJavascriptInterface(Bridge(), "Android")
-        webViewClient = WebViewClient()
+        webViewClient = object : WebViewClient() {
+            // For the main page only (on Android 6+ this is not called for sub-resources).
+            @Suppress("OVERRIDE_DEPRECATION")
+            override fun onReceivedError(
+                view: WebView?,
+                errorCode: Int,
+                description: String?,
+                failingUrl: String?
+            ) {
+                if (failingUrl == null || failingUrl.startsWith(baseUrl)) {
+                    ui.removeCallbacks(watchdog)
+                    onFailed?.invoke("PAGE ERROR " + (description ?: errorCode.toString()))
+                }
+            }
+        }
     }
 
     fun playPlaylist(playlistId: String) {
+        ui.removeCallbacks(watchdog)
+        ui.postDelayed(watchdog, 25000L)
         loadDataWithBaseURL(
-            "https://www.youtube.com",
-            PAGE.replace("__LIST__", playlistId),
+            baseUrl,
+            PAGE.replace("__LIST__", playlistId).replace("__ORIGIN__", baseUrl),
             "text/html",
             "utf-8",
             null
@@ -60,6 +89,7 @@ class YouTubeView(context: Context) : WebView(context) {
     }
 
     fun stop() {
+        ui.removeCallbacks(watchdog)
         loadUrl("about:blank")
     }
 
@@ -90,6 +120,7 @@ class YouTubeView(context: Context) : WebView(context) {
         private const val PAGE = """<!DOCTYPE html>
 <html><head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style>
 </head><body>
 <div id="p"></div>
@@ -103,10 +134,11 @@ function onYouTubeIframeAPIReady() {
   player = new YT.Player('p', {
     width: '100%',
     height: '100%',
+    host: 'https://www.youtube.com',
     playerVars: {
       listType: 'playlist', list: '__LIST__', autoplay: 1, controls: 0, rel: 0,
       playsinline: 1, modestbranding: 1, iv_load_policy: 3, fs: 0, disablekb: 1,
-      loop: 1, origin: 'https://www.youtube.com'
+      loop: 1, origin: '__ORIGIN__'
     },
     events: {
       onReady: function (e) {
@@ -127,9 +159,11 @@ function onYouTubeIframeAPIReady() {
       },
       onError: function (e) {
         errs++;
-        if (errs > 4 || e.data === 2 || e.data === 100) {
+        // 2 = bad request, 100 = playlist gone, 153 = player identity problem: no point skipping ahead
+        if (errs > 4 || e.data === 2 || e.data === 100 || e.data === 153) {
           Android.failed(e.data);
         } else {
+          // 101 / 150 / 152 = this one video can't be embedded: try the next one
           try { player.nextVideo(); } catch (x) { Android.failed(e.data); }
         }
       }

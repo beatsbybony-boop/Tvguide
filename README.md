@@ -15,6 +15,14 @@ uploader doesn't allow to be embedded are skipped. If a whole playlist can't be
 played, the channel switches automatically to half-hour mixes of music videos from
 the Internet Archive.
 
+Channel 30 (Free Movies) plays free full-length movies on YouTube: FilmRise,
+public-domain classics and Popcornflix, in 3-hour blocks. It falls back to the
+Archive's feature films the same way.
+
+YouTube requires embedded players to identify the app, so the player page is loaded
+with the app ID (`https://<applicationId>`) as its base URL. If you change the
+`applicationId` in `app/build.gradle.kts`, that updates automatically.
+
 In `channels.json`, a channel's `youtube` list holds playlist IDs (the part after
 `list=` in a YouTube playlist link). Fast-forward / rewind skip to the next /
 previous video on those channels.
