@@ -7,6 +7,13 @@
   { "number": 9,  "name": "ARCHIVE",    "query": "collection:prelinger" },
   { "number": 11, "name": "SPACE",      "query": "collection:nasa" },
   { "number": 13, "name": "NEWS",       "query": "collection:newsandpublicaffairs" },
+  {
+    "number": 14, "name": "CN OFFICIAL",
+    "youtube": [
+      { "id": "UUMsgXPD3wzzt8RxHJmXH7hQ", "title": "CARTOON NETWORK OFFICIAL CHANNEL" }
+    ],
+    "queries": [ "collection:classic_cartoons" ]
+  },
 
   {
     "number": 20, "name": "80S HIP HOP", "mix": true,
@@ -78,5 +85,13 @@
       { "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg", "title": "POPCORNFLIX ACTION MOVIES" }
     ],
     "queries": [ "collection:feature_films" ]
+  },
+  {
+    "number": 31, "name": "80S-90S FILMS",
+    "youtube": [
+      { "id": "PLIiI4TlOIndeSqfJt0JRtRtTzk2Ynz0n-", "title": "FREE 1980S MOVIES" },
+      { "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y", "title": "FULL MOON FEATURES FULL MOVIES" }
+    ],
+    "queries": [ "collection:feature_films AND date:[1970-01-01 TO 1999-12-31]" ]
   }
 ]

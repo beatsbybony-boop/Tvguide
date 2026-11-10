@@ -19,6 +19,10 @@ Channel 30 (Free Movies) plays free full-length movies on YouTube: FilmRise,
 public-domain classics and Popcornflix, in 3-hour blocks. It falls back to the
 Archive's feature films the same way.
 
+Channel 14 (CN Official) plays the official Cartoon Network YouTube channel, and
+channel 31 (80s-90s Films) plays a free 1980s movie playlist plus Full Moon
+Features' official full-movie playlist.
+
 YouTube requires embedded players to identify the app, so the player page is loaded
 with the app ID (`https://<applicationId>`) as its base URL. If you change the
 `applicationId` in `app/build.gradle.kts`, that updates automatically.
