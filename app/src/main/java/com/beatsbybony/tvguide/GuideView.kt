@@ -216,7 +216,8 @@ class GuideView(context: Context) : View(context) {
             drawLabel(c, "CH " + ch.number + "  " + ch.name, px0, margin + ph * 0.56f, ph * 0.11f, cYellow, pw)
             if (a != null) {
                 drawLabel(c, a.program.title.uppercase(Locale.US), px0, margin + ph * 0.73f, ph * 0.14f, Color.WHITE, pw)
-                val range = timeFmt.format(Date(a.startMs)) + " - " + timeFmt.format(Date(a.endMs))
+                val range = if (a.program.youtubeId != null) "NON-STOP MUSIC VIDEOS"
+                else timeFmt.format(Date(a.startMs)) + " - " + timeFmt.format(Date(a.endMs))
                 drawLabel(c, range, px0, margin + ph * 0.90f, ph * 0.11f, cLight, pw)
             } else {
                 drawLabel(
@@ -292,8 +293,10 @@ class GuideView(context: Context) : View(context) {
                 val x1 = labelW + (ce - windowStart) * pxPerMs
                 val isSel = rowSelected && selAiring != null && selAiring.startMs == a.startMs
                 var title = a.program.title.uppercase(Locale.US)
-                if (a.startMs < windowStart) title = "« " + title
-                if (a.endMs > end) title = "$title »"
+                if (a.program.youtubeId == null) {
+                    if (a.startMs < windowStart) title = "« " + title
+                    if (a.endMs > end) title = "$title »"
+                }
                 drawCell(c, x0, y0, x1, y1, title, baseFill, isSel, rowH)
                 t = a.endMs
             }

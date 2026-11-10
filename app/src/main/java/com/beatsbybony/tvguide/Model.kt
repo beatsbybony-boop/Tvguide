@@ -14,16 +14,28 @@ data class Track(
 class Program(
     val id: String,
     val title: String,
-    val tracks: List<Track>
+    val tracks: List<Track>,
+    /** Set for programs that play a YouTube playlist instead of Archive files. */
+    val youtubeId: String? = null,
+    fixedDurationMs: Long = 0L
 ) {
     val durationMs: Long
 
     init {
-        var total = 0L
-        for (t in tracks) total += t.durationMs
-        durationMs = total
+        if (youtubeId != null) {
+            durationMs = fixedDurationMs
+        } else {
+            var total = 0L
+            for (t in tracks) total += t.durationMs
+            durationMs = total
+        }
     }
 }
+
+data class YtList(
+    val id: String,
+    val title: String
+)
 
 data class Airing(
     val program: Program,
@@ -35,8 +47,17 @@ class Channel(
     val number: Int,
     val name: String,
     val queries: List<String>,
-    val mix: Boolean
+    val mix: Boolean,
+    /** YouTube playlists for this channel (tried first); queries are the Archive fallback. */
+    val youtube: List<YtList> = emptyList()
 ) {
+    /** True once YouTube could not be played and the channel switched to the Archive. */
+    @Volatile
+    var youtubeFailed: Boolean = false
+
+    @Volatile
+    var archivePrograms: List<Program> = emptyList()
+
     /** Replaced in one go once the channel has finished loading. */
     @Volatile
     var programs: List<Program> = emptyList()

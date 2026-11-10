@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.KeyEvent
 import android.view.SurfaceView
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -21,7 +22,9 @@ class MainActivity : Activity() {
 
     private lateinit var root: FrameLayout
     private lateinit var surface: SurfaceView
+    private lateinit var web: YouTubeView
     private lateinit var guide: GuideView
+    private lateinit var loader: ChannelLoader
     private var player: ExoPlayer? = null
 
     private val handler = Handler(Looper.getMainLooper())
@@ -29,6 +32,7 @@ class MainActivity : Activity() {
     private var playingIndex = -1
     private var currentProgram: Program? = null
     private var guideOpen = true
+    private var ytActive = false
     private var videoAspect = 16f / 9f
     private var errorCount = 0
 
@@ -92,6 +96,9 @@ class MainActivity : Activity() {
         root = FrameLayout(this)
         surface = SurfaceView(this)
         root.addView(surface, FrameLayout.LayoutParams(1, 1))
+        web = YouTubeView(this)
+        web.visibility = View.GONE
+        root.addView(web, FrameLayout.LayoutParams(1, 1))
         guide = GuideView(this)
         guide.channels = channels
         root.addView(
@@ -101,32 +108,47 @@ class MainActivity : Activity() {
         setContentView(root)
 
         guide.onLayoutChanged = { root.post { layoutVideo() } }
+        web.onPlaying = { title -> onYoutubePlaying(title) }
+        web.onFailed = { youtubeFailed() }
 
         val exo = ExoPlayer.Builder(this).build()
         exo.setVideoSurfaceView(surface)
         exo.addListener(listener)
         player = exo
 
-        ChannelLoader { runOnUiThread { onChannelsUpdated() } }.load(channels)
+        loader = ChannelLoader { runOnUiThread { onChannelsUpdated() } }
+        loader.load(channels)
+        handler.post { onChannelsUpdated() }
         Weather.startPolling { guide.postInvalidate() }
     }
 
     override fun onStart() {
         super.onStart()
         handler.post(ticker)
-        if (playingIndex >= 0) player?.playWhenReady = true
+        if (ytActive) {
+            web.onResume()
+            web.playVideo()
+        } else if (playingIndex >= 0) {
+            player?.playWhenReady = true
+        }
     }
 
     override fun onStop() {
         super.onStop()
         handler.removeCallbacks(ticker)
         player?.playWhenReady = false
+        if (ytActive) {
+            web.pauseVideo()
+            web.onPause()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         player?.release()
         player = null
+        root.removeView(web)
+        web.destroy()
     }
 
     // ---------- channels & playback ----------
@@ -137,6 +159,15 @@ class MainActivity : Activity() {
             if (first >= 0) {
                 guide.resetToNow(first)
                 tune(first)
+            }
+        } else {
+            // A YouTube channel that fell back to the Archive has just finished loading.
+            val ch = channels[playingIndex]
+            val cur = currentProgram
+            if (ch.youtubeFailed && cur != null && cur.youtubeId != null &&
+                ch.programs.isNotEmpty() && ch.programs[0].youtubeId == null
+            ) {
+                tune(playingIndex)
             }
         }
         guide.invalidate()
@@ -157,12 +188,71 @@ class MainActivity : Activity() {
         }
         playingIndex = index
         errorCount = 0
-        play(a.program, now - a.startMs)
+        val yt = a.program.youtubeId
+        if (yt != null) {
+            currentProgram = a.program
+            player?.stop()
+            setYoutubeActive(true)
+            web.playPlaylist(yt)
+        } else {
+            setYoutubeActive(false)
+            play(a.program, now - a.startMs)
+        }
         guide.showBanner(
             "CH " + ch.number + "  " + ch.name,
             a.program.title.uppercase(Locale.US),
             5000
         )
+    }
+
+    private fun setYoutubeActive(active: Boolean) {
+        val was = ytActive
+        ytActive = active
+        web.visibility = if (active) View.VISIBLE else View.GONE
+        surface.visibility = if (active) View.GONE else View.VISIBLE
+        if (was && !active) web.stop()
+        layoutVideo()
+    }
+
+    private fun onYoutubePlaying(title: String) {
+        if (!ytActive || playingIndex < 0 || title.isBlank()) return
+        val ch = channels[playingIndex]
+        guide.showBanner(
+            "CH " + ch.number + "  " + ch.name,
+            "NOW PLAYING: " + title.uppercase(Locale.US),
+            6000
+        )
+    }
+
+    /**
+     * YouTube wouldn't play this playlist (usually because the uploader blocks embedding).
+     * If the channel has another playlist, use that; otherwise fall back to Internet Archive mixes.
+     */
+    private fun youtubeFailed() {
+        if (!ytActive || playingIndex < 0) return
+        val ch = channels[playingIndex]
+        val cur = currentProgram
+        val remaining = ArrayList<Program>()
+        for (p in ch.programs) {
+            if (p.youtubeId != null && (cur == null || p.id != cur.id)) remaining.add(p)
+        }
+        if (remaining.isNotEmpty()) {
+            ch.programs = remaining
+            tune(playingIndex)
+            return
+        }
+        if (ch.youtubeFailed) return
+        ch.youtubeFailed = true
+        setYoutubeActive(false)
+        ch.programs = emptyList()
+        ch.loaded = false
+        guide.showBanner(
+            "CH " + ch.number + "  " + ch.name,
+            "YOUTUBE BLOCKED - LOADING ARCHIVE VIDEOS",
+            8000
+        )
+        loader.loadArchiveFallback(ch)
+        guide.invalidate()
     }
 
     private fun play(p: Program, offsetMs: Long) {
@@ -186,7 +276,7 @@ class MainActivity : Activity() {
 
     /** Moves on after a program ends or fails, keeping the channel "live". */
     private fun advance() {
-        if (playingIndex < 0) return
+        if (playingIndex < 0 || ytActive) return
         val ch = channels[playingIndex]
         val now = System.currentTimeMillis()
         val a = ch.airingAt(now) ?: return
@@ -228,16 +318,17 @@ class MainActivity : Activity() {
         val bw = box.width()
         val bh = box.height()
         if (bw <= 0 || bh <= 0) return
+        val aspect = if (ytActive) 16f / 9f else videoAspect
         var w = bw.toFloat()
-        var h = w / videoAspect
+        var h = w / aspect
         if (h > bh) {
             h = bh.toFloat()
-            w = h * videoAspect
+            w = h * aspect
         }
         val lp = FrameLayout.LayoutParams(w.toInt(), h.toInt())
         lp.leftMargin = box.left + (bw - w.toInt()) / 2
         lp.topMargin = box.top + (bh - h.toInt()) / 2
-        surface.layoutParams = lp
+        if (ytActive) web.layoutParams = lp else surface.layoutParams = lp
     }
 
     // ---------- remote control ----------
@@ -264,8 +355,8 @@ class MainActivity : Activity() {
             KeyEvent.KEYCODE_MENU -> if (playingIndex >= 0) setGuide(false)
             KeyEvent.KEYCODE_BACK -> finish()
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePause()
-            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> seekBy(30000L)
-            KeyEvent.KEYCODE_MEDIA_REWIND -> seekBy(-30000L)
+            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> skip(1)
+            KeyEvent.KEYCODE_MEDIA_REWIND -> skip(-1)
             else -> return false
         }
         return true
@@ -278,21 +369,30 @@ class MainActivity : Activity() {
             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER,
             KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_MENU -> setGuide(true)
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePause()
-            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> seekBy(30000L)
-            KeyEvent.KEYCODE_MEDIA_REWIND -> seekBy(-30000L)
+            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> skip(1)
+            KeyEvent.KEYCODE_MEDIA_REWIND -> skip(-1)
             else -> return false
         }
         return true
     }
 
     private fun togglePause() {
+        if (ytActive) {
+            web.togglePause()
+            return
+        }
         val pl = player ?: return
         pl.playWhenReady = !pl.playWhenReady
     }
 
-    private fun seekBy(deltaMs: Long) {
+    /** Fast-forward / rewind: next or previous video on YouTube channels, +/-30s elsewhere. */
+    private fun skip(dir: Int) {
+        if (ytActive) {
+            if (dir > 0) web.next() else web.prev()
+            return
+        }
         val pl = player ?: return
-        val target = pl.currentPosition + deltaMs
+        val target = pl.currentPosition + dir * 30000L
         pl.seekTo(if (target > 0L) target else 0L)
     }
 }

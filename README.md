@@ -6,11 +6,18 @@ classic time grid with a live preview window, a clock and the local temperature.
 
 ## Channels
 
-Channels 2-13 loop single films, cartoons and shows. Channels 20-25 are music
-video channels (80s Hip Hop, 90s Hip Hop, 80s Synth, Grunge+Metal, 80s Pop Hits,
-90s Pop Hits). Short music videos are grouped into half-hour mix blocks, and a
-"NOW PLAYING" banner shows the current video. Music videos on the Internet Archive
-are user-uploaded, so how many each channel finds can vary.
+Channels 2-13 loop single films, cartoons and shows from the Internet Archive.
+
+Channels 20-25 are music video channels (80s Hip Hop, 90s Hip Hop, 80s Synth,
+Grunge+Metal, 80s Pop Hits, 90s Pop Hits). They play YouTube playlists through
+YouTube's own embedded player, shuffled, with a "NOW PLAYING" banner. Videos the
+uploader doesn't allow to be embedded are skipped. If a whole playlist can't be
+played, the channel switches automatically to half-hour mixes of music videos from
+the Internet Archive.
+
+In `channels.json`, a channel's `youtube` list holds playlist IDs (the part after
+`list=` in a YouTube playlist link). Fast-forward / rewind skip to the next /
+previous video on those channels.
 
 ## Remote controls
 

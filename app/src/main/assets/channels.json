@@ -10,6 +10,9 @@
 
   {
     "number": 20, "name": "80S HIP HOP", "mix": true,
+    "youtube": [
+      { "id": "PLDQ45hujDIQ3tnQyZWNIrNrHxx63IPULk", "title": "80S HIP HOP VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND date:[1980-01-01 TO 1989-12-31]",
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND (1980s OR \"80s\" OR 1984 OR 1985 OR 1986 OR 1987 OR 1988 OR 1989)"
@@ -17,6 +20,9 @@
   },
   {
     "number": 21, "name": "90S HIP HOP", "mix": true,
+    "youtube": [
+      { "id": "PL4xqRMQ2GXalF74aoEoGtf19nIPgzLk8U", "title": "90S HIP HOP VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND date:[1990-01-01 TO 1999-12-31]",
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND (1990s OR \"90s\" OR 1992 OR 1993 OR 1994 OR 1995 OR 1996 OR 1997 OR 1998)"
@@ -24,6 +30,9 @@
   },
   {
     "number": 22, "name": "80S SYNTH", "mix": true,
+    "youtube": [
+      { "id": "PLD23068125D04AFBE", "title": "80S SYNTH + NEW WAVE VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (synthpop OR \"synth pop\" OR \"new wave\" OR synthwave) AND date:[1980-01-01 TO 1989-12-31]",
       "(\"music video\" OR \"music videos\") AND (synthpop OR \"synth pop\" OR \"new wave\" OR synth) AND (1980s OR \"80s\" OR 1983 OR 1984 OR 1985 OR 1986 OR 1987)"
@@ -31,6 +40,10 @@
   },
   {
     "number": 23, "name": "GRUNGE+METAL", "mix": true,
+    "youtube": [
+      { "id": "PLD58ECddxRngHs9gZPQWOCAKwV1hTtYe4", "title": "90S GRUNGE VIDEOS" },
+      { "id": "PLDcxZcf5_wJEugWsP-O62jodc0iYrpg4r", "title": "90S METAL VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (grunge OR \"heavy metal\" OR metal) AND date:[1989-01-01 TO 1999-12-31]",
       "(\"music video\" OR \"music videos\") AND (grunge OR \"heavy metal\" OR thrash) AND (1990s OR \"90s\" OR 1991 OR 1992 OR 1993 OR 1994 OR 1995)"
@@ -38,6 +51,9 @@
   },
   {
     "number": 24, "name": "80S POP HITS", "mix": true,
+    "youtube": [
+      { "id": "PLGBuKfnErZlDYOaD2bOazzCYvy13ozt7C", "title": "80S POP HITS VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND date:[1980-01-01 TO 1989-12-31]",
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND (1980s OR \"80s\" OR 1984 OR 1985 OR 1986 OR 1987)"
@@ -45,6 +61,9 @@
   },
   {
     "number": 25, "name": "90S POP HITS", "mix": true,
+    "youtube": [
+      { "id": "PLGBuKfnErZlAH3yaYBpIXra0HxFGEJKsB", "title": "90S POP HITS VIDEOS" }
+    ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND date:[1990-01-01 TO 1999-12-31]",
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND (1990s OR \"90s\" OR 1994 OR 1995 OR 1996 OR 1997 OR 1998)"

@@ -46,7 +46,15 @@ object ChannelConfig {
             } else if (o.has("query")) {
                 queries.add(o.getString("query"))
             }
-            out.add(Channel(o.getInt("number"), o.getString("name"), queries, o.optBoolean("mix", false)))
+            val yt = ArrayList<YtList>()
+            val ya = o.optJSONArray("youtube")
+            if (ya != null) {
+                for (k in 0 until ya.length()) {
+                    val y = ya.getJSONObject(k)
+                    yt.add(YtList(y.getString("id"), y.getString("title")))
+                }
+            }
+            out.add(Channel(o.getInt("number"), o.getString("name"), queries, o.optBoolean("mix", false), yt))
         }
         return out
     }
@@ -99,11 +107,42 @@ class ChannelLoader(private val onChanged: () -> Unit) {
 
     fun load(channels: List<Channel>) {
         for (ch in channels) {
-            pool.execute { loadChannel(ch) }
+            if (ch.youtube.isNotEmpty()) {
+                // YouTube channels are ready instantly; the Archive is only a fallback.
+                ch.programs = youtubePrograms(ch)
+                ch.loaded = true
+            } else {
+                pool.execute { loadChannel(ch) }
+            }
+        }
+    }
+
+    /** One long program per playlist, so the guide shows the playlist across the whole grid. */
+    private fun youtubePrograms(ch: Channel): List<Program> {
+        val ms = if (ch.youtube.size == 1) 30L * 24 * 3600 * 1000 else 3L * 3600 * 1000
+        val out = ArrayList<Program>()
+        for (y in ch.youtube) out.add(Program("yt-" + y.id, y.title, emptyList(), y.id, ms))
+        return out
+    }
+
+    /** Used when a channel's YouTube playlist can't be embedded. */
+    fun loadArchiveFallback(ch: Channel) {
+        pool.execute {
+            val result = fetchPrograms(ch)
+            ch.archivePrograms = result
+            if (ch.youtubeFailed && result.isNotEmpty()) ch.programs = result
+            ch.loaded = true
+            onChanged()
         }
     }
 
     private fun loadChannel(ch: Channel) {
+        ch.programs = fetchPrograms(ch)
+        ch.loaded = true
+        onChanged()
+    }
+
+    private fun fetchPrograms(ch: Channel): List<Program> {
         var result: List<Program> = emptyList()
         var attempt = 0
         while (attempt < 3 && result.isEmpty()) {
@@ -111,15 +150,13 @@ class ChannelLoader(private val onChanged: () -> Unit) {
                 try {
                     Thread.sleep(10000)
                 } catch (e: InterruptedException) {
-                    return
+                    return emptyList()
                 }
             }
             result = tryLoad(ch)
             attempt++
         }
-        ch.programs = result
-        ch.loaded = true
-        onChanged()
+        return result
     }
 
     private fun tryLoad(ch: Channel): List<Program> {
