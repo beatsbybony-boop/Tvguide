@@ -88,13 +88,14 @@ class GuideView(context: Context) : View(context) {
 
     fun moveTime(dir: Int) {
         if (channels.isEmpty()) return
-        val nowFloor = floorHalfHour(System.currentTimeMillis())
+        val now = System.currentTimeMillis()
         val a = selectedAiring()
         if (dir > 0) {
             selTime = a?.endMs ?: (selTime + HALF_HOUR)
         } else {
+            // Never step back onto something that has already finished airing.
             val t = if (a != null) a.startMs - 1 else selTime - HALF_HOUR
-            if (t < nowFloor) return
+            if (t < now) return
             selTime = t
         }
         while (selTime >= windowStart + WINDOW) windowStart += HALF_HOUR

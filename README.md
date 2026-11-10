@@ -13,7 +13,8 @@ classic time grid with a live preview window, a clock and the local temperature.
 | Up / Down | Move between channels |
 | Left / Right | Move between programs in time |
 | Select | Tune the highlighted channel (full screen) |
-| Back / Menu | Return to full screen |
+| Menu | Return to full screen |
+| Back | Exit the app |
 | Play/Pause, Fast-forward, Rewind | Pause, +30s, -30s |
 
 **Full screen**
@@ -22,6 +23,8 @@ classic time grid with a live preview window, a clock and the local temperature.
 | --- | --- |
 | Up / Down | Channel surf |
 | Select / Menu / Back | Open the guide |
+
+Pressing Select on the channel that's already playing takes you straight back to full screen.
 
 ## Get the APK
 

@@ -78,7 +78,11 @@ object Weather {
  */
 class ChannelLoader(private val onChanged: () -> Unit) {
 
-    private val pool = Executors.newFixedThreadPool(4)
+    private val pool = Executors.newFixedThreadPool(4) { r ->
+        val t = Thread(r)
+        t.isDaemon = true
+        t
+    }
 
     fun load(channels: List<Channel>) {
         for (ch in channels) {

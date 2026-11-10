@@ -212,6 +212,10 @@ class MainActivity : Activity() {
     // ---------- remote control ----------
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // A held button must not toggle the guide back and forth.
+        val isToggleKey = keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER ||
+            keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU
+        if (isToggleKey && event != null && event.repeatCount > 0) return true
         val handled = if (guideOpen) guideKey(keyCode) else tvKey(keyCode)
         return handled || super.onKeyDown(keyCode, event)
     }
@@ -226,9 +230,8 @@ class MainActivity : Activity() {
                 if (guide.selRow != playingIndex) tune(guide.selRow)
                 if (playingIndex >= 0) setGuide(false)
             }
-            KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_MENU -> {
-                if (playingIndex >= 0) setGuide(false) else finish()
-            }
+            KeyEvent.KEYCODE_MENU -> if (playingIndex >= 0) setGuide(false)
+            KeyEvent.KEYCODE_BACK -> finish()
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePause()
             KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> seekBy(30000L)
             KeyEvent.KEYCODE_MEDIA_REWIND -> seekBy(-30000L)
