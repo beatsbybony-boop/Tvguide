@@ -1,11 +1,29 @@
 package com.beatsbybony.tvguide
 
-data class Program(
-    val id: String,
+/** One playable video file. */
+data class Track(
     val title: String,
     val url: String,
     val durationMs: Long
 )
+
+/**
+ * One slot in the guide. Usually a single video, but music channels group
+ * several short videos into a half-hour "mix" block.
+ */
+class Program(
+    val id: String,
+    val title: String,
+    val tracks: List<Track>
+) {
+    val durationMs: Long
+
+    init {
+        var total = 0L
+        for (t in tracks) total += t.durationMs
+        durationMs = total
+    }
+}
 
 data class Airing(
     val program: Program,
@@ -16,7 +34,8 @@ data class Airing(
 class Channel(
     val number: Int,
     val name: String,
-    val query: String
+    val queries: List<String>,
+    val mix: Boolean
 ) {
     /** Replaced in one go once the channel has finished loading. */
     @Volatile

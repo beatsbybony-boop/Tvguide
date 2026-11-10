@@ -52,7 +52,27 @@ class MainActivity : Activity() {
                 player?.stop()
                 return
             }
-            advance()
+            val pl = player
+            if (pl != null && pl.hasNextMediaItem()) {
+                // one bad video in a music mix: skip to the next one
+                pl.seekToNextMediaItem()
+                pl.prepare()
+                pl.playWhenReady = true
+            } else {
+                advance()
+            }
+        }
+
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            val p = currentProgram ?: return
+            if (p.tracks.size > 1 && mediaItem != null && playingIndex >= 0) {
+                val ch = channels[playingIndex]
+                guide.showBanner(
+                    "CH " + ch.number + "  " + ch.name,
+                    "NOW PLAYING: " + mediaItem.mediaId.uppercase(Locale.US),
+                    6000
+                )
+            }
         }
 
         override fun onVideoSizeChanged(videoSize: VideoSize) {
@@ -148,7 +168,18 @@ class MainActivity : Activity() {
     private fun play(p: Program, offsetMs: Long) {
         currentProgram = p
         val pl = player ?: return
-        pl.setMediaItem(MediaItem.fromUri(p.url), if (offsetMs > 0L) offsetMs else 0L)
+        // Work out which track of the block should be on right now, and how far in.
+        var remaining = if (offsetMs > 0L) offsetMs else 0L
+        var index = 0
+        while (index < p.tracks.size - 1 && remaining >= p.tracks[index].durationMs) {
+            remaining -= p.tracks[index].durationMs
+            index++
+        }
+        val items = ArrayList<MediaItem>()
+        for (t in p.tracks) {
+            items.add(MediaItem.Builder().setUri(t.url).setMediaId(t.title).build())
+        }
+        pl.setMediaItems(items, index, remaining)
         pl.prepare()
         pl.playWhenReady = true
     }

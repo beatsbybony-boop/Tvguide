@@ -27,13 +27,26 @@ object Http {
 }
 
 object ChannelConfig {
+    /**
+     * channels.json entries look like:
+     *   { "number": 2, "name": "TOONS", "query": "collection:classic_cartoons" }
+     *   { "number": 20, "name": "80S HIP HOP", "mix": true, "queries": ["...", "..."] }
+     * "queries" are tried in order, so put the strictest search first.
+     */
     fun load(ctx: Context): List<Channel> {
         val text = ctx.assets.open("channels.json").bufferedReader().use { it.readText() }
         val arr = JSONArray(text)
         val out = ArrayList<Channel>()
         for (i in 0 until arr.length()) {
             val o = arr.getJSONObject(i)
-            out.add(Channel(o.getInt("number"), o.getString("name"), o.getString("query")))
+            val queries = ArrayList<String>()
+            val qa = o.optJSONArray("queries")
+            if (qa != null) {
+                for (k in 0 until qa.length()) queries.add(qa.getString(k))
+            } else if (o.has("query")) {
+                queries.add(o.getString("query"))
+            }
+            out.add(Channel(o.getInt("number"), o.getString("name"), queries, o.optBoolean("mix", false)))
         }
         return out
     }
@@ -78,7 +91,7 @@ object Weather {
  */
 class ChannelLoader(private val onChanged: () -> Unit) {
 
-    private val pool = Executors.newFixedThreadPool(4) { r ->
+    private val pool = Executors.newFixedThreadPool(6) { r ->
         val t = Thread(r)
         t.isDaemon = true
         t
@@ -110,15 +123,14 @@ class ChannelLoader(private val onChanged: () -> Unit) {
     }
 
     private fun tryLoad(ch: Channel): List<Program> {
-        val out = ArrayList<Program>()
+        val found = ArrayList<Pair<String, Track>>()
+        val want = if (ch.mix) Config.MIX_TRACKS else Config.ITEMS_PER_CHANNEL
         try {
-            val docs = search(ch)
-            val seed = (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) * 100 + ch.number).toLong()
-            for (doc in docs.shuffled(Random(seed))) {
-                if (out.size >= Config.ITEMS_PER_CHANNEL) break
+            for (doc in search(ch)) {
+                if (found.size >= want) break
                 try {
-                    val p = resolve(doc.first, doc.second)
-                    if (p != null) out.add(p)
+                    val t = resolveTrack(doc.first, doc.second, ch.mix)
+                    if (t != null) found.add(Pair(doc.first, t))
                 } catch (e: Exception) {
                     // skip items that fail
                 }
@@ -126,11 +138,71 @@ class ChannelLoader(private val onChanged: () -> Unit) {
         } catch (e: Exception) {
             // network problem: caller retries
         }
+        if (ch.mix) return group(ch, found)
+        val out = ArrayList<Program>()
+        for (f in found) out.add(Program(f.first, f.second.title, listOf(f.second)))
         return out
     }
 
+    /** Short music videos are bundled into ~30 minute blocks so they fit the guide grid. */
+    private fun group(ch: Channel, items: List<Pair<String, Track>>): List<Program> {
+        val out = ArrayList<Program>()
+        var cur = ArrayList<Track>()
+        var curMs = 0L
+        var n = 1
+        for (item in items) {
+            val t = item.second
+            if (t.durationMs >= 20 * 60_000L) {
+                // a long compilation stands on its own
+                if (cur.isNotEmpty()) {
+                    out.add(Program(ch.number.toString() + "-mix-" + n, ch.name + " MIX " + n, cur))
+                    n++
+                    cur = ArrayList<Track>()
+                    curMs = 0L
+                }
+                out.add(Program(item.first, t.title, listOf(t)))
+                continue
+            }
+            cur.add(t)
+            curMs += t.durationMs
+            if (curMs >= 25 * 60_000L || cur.size >= 8) {
+                out.add(Program(ch.number.toString() + "-mix-" + n, ch.name + " MIX " + n, cur))
+                n++
+                cur = ArrayList<Track>()
+                curMs = 0L
+            }
+        }
+        if (cur.isNotEmpty()) {
+            out.add(Program(ch.number.toString() + "-mix-" + n, ch.name + " MIX " + n, cur))
+        }
+        return out
+    }
+
+    /**
+     * Runs each of the channel's queries in order and returns the candidates,
+     * strictest query first. Within a query the order is shuffled (stable for a
+     * whole day) so the lineup is different from day to day.
+     */
     private fun search(ch: Channel): List<Pair<String, String>> {
-        val q = "(" + ch.query + ") AND mediatype:movies AND NOT access-restricted-item:true"
+        val seed = (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) * 100 + ch.number).toLong()
+        val seen = HashSet<String>()
+        val out = ArrayList<Pair<String, String>>()
+        for (query in ch.queries) {
+            try {
+                val docs = searchOne(query)
+                for (d in docs.shuffled(Random(seed))) {
+                    if (seen.add(d.first)) out.add(d)
+                }
+            } catch (e: Exception) {
+                // try the next query
+            }
+            if (out.size >= 80) break
+        }
+        return out
+    }
+
+    private fun searchOne(query: String): List<Pair<String, String>> {
+        val q = "(" + query + ") AND mediatype:movies AND NOT access-restricted-item:true"
         val url = "https://archive.org/advancedsearch.php?q=" + URLEncoder.encode(q, "UTF-8") +
             "&fl%5B%5D=identifier&fl%5B%5D=title" +
             "&sort%5B%5D=" + URLEncoder.encode("downloads desc", "UTF-8") +
@@ -152,7 +224,7 @@ class ChannelLoader(private val onChanged: () -> Unit) {
         return out
     }
 
-    private fun resolve(id: String, title: String): Program? {
+    private fun resolveTrack(id: String, title: String, mix: Boolean): Track? {
         val json = JSONObject(Http.get("https://archive.org/metadata/" + id))
         val files = json.optJSONArray("files") ?: return null
         var best: JSONObject? = null
@@ -177,9 +249,10 @@ class ChannelLoader(private val onChanged: () -> Unit) {
         val file = best ?: return null
         val seconds = parseLength(file.optString("length"))
         val durationMs = (if (seconds > 0.0) seconds else 1800.0) * 1000.0
-        if (durationMs < 60_000.0 || durationMs > 4 * 3600 * 1000.0) return null
+        val maxMs = if (mix) 90 * 60 * 1000.0 else 4 * 3600 * 1000.0
+        if (durationMs < 30_000.0 || durationMs > maxMs) return null
         val url = "https://archive.org/download/" + id + "/" + android.net.Uri.encode(file.getString("name"), "/")
-        return Program(id, title, url, durationMs.toLong())
+        return Track(title, url, durationMs.toLong())
     }
 
     private fun parseLength(s: String): Double {

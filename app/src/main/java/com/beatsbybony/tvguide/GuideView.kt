@@ -231,7 +231,7 @@ class GuideView(context: Context) : View(context) {
         val headerH = h * 0.065f
         val rowsTop = topH + headerH
         val rowH = (h - rowsTop) / VISIBLE_ROWS
-        val labelW = w * 0.15f
+        val labelW = w * 0.18f
         val gridW = w - labelW
         val slotW = gridW / 3f
         val pxPerMs = gridW / WINDOW
@@ -272,7 +272,7 @@ class GuideView(context: Context) : View(context) {
                 c.drawRect(3f, y0 + 3f, labelW - 3f, y1 - 3f, stroke)
             }
             drawLabel(c, ch.number.toString(), 14f, cy, rowH * 0.46f, cYellow, rowH * 0.9f)
-            drawLabel(c, ch.name, 14f + rowH * 0.9f, cy, rowH * 0.32f, Color.WHITE, labelW - rowH * 0.9f - 22f)
+            drawLabel(c, ch.name, 14f + rowH * 0.9f, cy, rowH * 0.30f, Color.WHITE, labelW - rowH * 0.9f - 22f)
 
             // Program cells
             val baseFill = if (r % 2 == 0) cCellA else cCellB

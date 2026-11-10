@@ -4,6 +4,14 @@ A 1990s cable-style channel guide for Fire TV / Android TV. Channels loop
 open-licensed and public-domain video from the Internet Archive, laid out in a
 classic time grid with a live preview window, a clock and the local temperature.
 
+## Channels
+
+Channels 2-13 loop single films, cartoons and shows. Channels 20-25 are music
+video channels (80s Hip Hop, 90s Hip Hop, 80s Synth, Grunge+Metal, 80s Pop Hits,
+90s Pop Hits). Short music videos are grouped into half-hour mix blocks, and a
+"NOW PLAYING" banner shows the current video. Music videos on the Internet Archive
+are user-uploaded, so how many each channel finds can vary.
+
 ## Remote controls
 
 **In the guide**

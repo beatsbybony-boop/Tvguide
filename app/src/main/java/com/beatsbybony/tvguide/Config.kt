@@ -10,6 +10,9 @@ object Config {
     const val LOCATION_LABEL = "MIFFLIN CO"
     const val FAHRENHEIT = true
 
-    /** How many programs each channel loops through. */
+    /** How many programs a normal channel loops through. */
     const val ITEMS_PER_CHANNEL = 14
+
+    /** How many music videos a music channel pulls in (grouped into ~30 minute mixes). */
+    const val MIX_TRACKS = 36
 }
