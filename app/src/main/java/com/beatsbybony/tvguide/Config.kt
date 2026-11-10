@@ -5,9 +5,9 @@ package com.beatsbybony.tvguide
  * Find your coordinates by searching "my latitude longitude" or using any maps app.
  */
 object Config {
-    const val LATITUDE = 40.7128
-    const val LONGITUDE = -74.0060
-    const val LOCATION_LABEL = "NEW YORK"
+    const val LATITUDE = 40.5992
+    const val LONGITUDE = -77.5714
+    const val LOCATION_LABEL = "MIFFLIN CO"
     const val FAHRENHEIT = true
 
     /** How many programs each channel loops through. */
