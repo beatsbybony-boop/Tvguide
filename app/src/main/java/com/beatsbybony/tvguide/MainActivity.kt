@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.SurfaceView
 import android.view.View
@@ -23,6 +24,7 @@ class MainActivity : Activity() {
     private lateinit var root: FrameLayout
     private lateinit var surface: SurfaceView
     private lateinit var web: YouTubeView
+    private lateinit var bars: ColorBarsView
     private lateinit var guide: GuideView
     private lateinit var loader: ChannelLoader
     private var player: ExoPlayer? = null
@@ -35,6 +37,28 @@ class MainActivity : Activity() {
     private var ytActive = false
     private var videoAspect = 16f / 9f
     private var errorCount = 0
+
+    /** True when the viewer tuned a channel that had nothing to play yet (still loading). */
+    private var tunedWaiting = false
+
+    // Color bars: shown while tuning, kept up for at least a moment so they read as a tuning effect.
+    private var barsWanted = true
+    private var barsShownAt = SystemClock.uptimeMillis()
+    private val hideBarsRunnable = Runnable { if (!barsWanted) bars.visibility = View.GONE }
+
+    private fun showBars() {
+        barsWanted = true
+        barsShownAt = SystemClock.uptimeMillis()
+        handler.removeCallbacks(hideBarsRunnable)
+        bars.visibility = View.VISIBLE
+    }
+
+    private fun hideBars() {
+        barsWanted = false
+        handler.removeCallbacks(hideBarsRunnable)
+        val wait = 900L - (SystemClock.uptimeMillis() - barsShownAt)
+        if (wait > 0L) handler.postDelayed(hideBarsRunnable, wait) else bars.visibility = View.GONE
+    }
 
     private val ticker = object : Runnable {
         override fun run() {
@@ -54,6 +78,7 @@ class MainActivity : Activity() {
             if (errorCount > 5) {
                 guide.showBanner("NO SIGNAL", "PLEASE STAND BY", 5000)
                 player?.stop()
+                showBars()
                 return
             }
             val pl = player
@@ -79,6 +104,10 @@ class MainActivity : Activity() {
             }
         }
 
+        override fun onRenderedFirstFrame() {
+            if (!ytActive) hideBars()
+        }
+
         override fun onVideoSizeChanged(videoSize: VideoSize) {
             if (videoSize.width > 0 && videoSize.height > 0) {
                 videoAspect = videoSize.width * videoSize.pixelWidthHeightRatio / videoSize.height
@@ -99,6 +128,8 @@ class MainActivity : Activity() {
         web = YouTubeView(this)
         web.visibility = View.GONE
         root.addView(web, FrameLayout.LayoutParams(1, 1))
+        bars = ColorBarsView(this)
+        root.addView(bars, FrameLayout.LayoutParams(1, 1))
         guide = GuideView(this)
         guide.channels = channels
         root.addView(
@@ -164,7 +195,10 @@ class MainActivity : Activity() {
             // A YouTube channel that fell back to the Archive has just finished loading.
             val ch = channels[playingIndex]
             val cur = currentProgram
-            if (ch.youtubeFailed && cur != null && cur.youtubeId != null &&
+            if (tunedWaiting && ch.airingAt(System.currentTimeMillis()) != null) {
+                // the channel the viewer tuned has finished loading
+                tune(playingIndex)
+            } else if (ch.youtubeFailed && cur != null && cur.youtubeId != null &&
                 ch.programs.isNotEmpty() && ch.programs[0].youtubeId == null
             ) {
                 tune(playingIndex)
@@ -177,8 +211,15 @@ class MainActivity : Activity() {
         if (index < 0 || index >= channels.size) return
         val ch = channels[index]
         val now = System.currentTimeMillis()
+        showBars()
         val a = ch.airingAt(now)
         if (a == null) {
+            // Nothing to play yet: stay on the color bars and start automatically once it loads.
+            playingIndex = index
+            tunedWaiting = true
+            currentProgram = null
+            player?.stop()
+            if (ytActive) setYoutubeActive(false)
             guide.showBanner(
                 "CH " + ch.number + "  " + ch.name,
                 if (ch.loaded) "NO SIGNAL" else "LOADING...",
@@ -186,6 +227,7 @@ class MainActivity : Activity() {
             )
             return
         }
+        tunedWaiting = false
         playingIndex = index
         errorCount = 0
         val yt = a.program.youtubeId
@@ -215,7 +257,9 @@ class MainActivity : Activity() {
     }
 
     private fun onYoutubePlaying(title: String) {
-        if (!ytActive || playingIndex < 0 || title.isBlank()) return
+        if (!ytActive || playingIndex < 0) return
+        hideBars()
+        if (title.isBlank()) return
         val ch = channels[playingIndex]
         guide.showBanner(
             "CH " + ch.number + "  " + ch.name,
@@ -249,6 +293,7 @@ class MainActivity : Activity() {
         if (ch.youtubeFailed) return
         ch.youtubeFailed = true
         setYoutubeActive(false)
+        showBars()
         ch.programs = emptyList()
         ch.loaded = false
         guide.showBanner(
@@ -323,6 +368,11 @@ class MainActivity : Activity() {
         val bw = box.width()
         val bh = box.height()
         if (bw <= 0 || bh <= 0) return
+        // The color bars fill the whole preview window / screen.
+        val barsLp = FrameLayout.LayoutParams(bw, bh)
+        barsLp.leftMargin = box.left
+        barsLp.topMargin = box.top
+        bars.layoutParams = barsLp
         val aspect = if (ytActive) 16f / 9f else videoAspect
         var w = bw.toFloat()
         var h = w / aspect
