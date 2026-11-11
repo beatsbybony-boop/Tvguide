@@ -378,13 +378,18 @@
     "name": "UNSOLVED",
     "youtube": [
       {
-        "id": "v:5CDcgYH0Ot0",
+        "id": "PLiPNgE-Z-5RSitfA_7-Ah1ZV0tXfQaVoS",
+        "title": "UNSOLVED MYSTERIES"
+      },
+      {
+        "id": "PLiPNgE-Z-5RSPZf0m-WKJ5EUNiBpTpPQZ",
         "title": "UNSOLVED MYSTERIES"
       }
     ],
     "queries": [
       "collection:classic_tv"
-    ]
+    ],
+    "combine": true
   },
   {
     "number": 43,
