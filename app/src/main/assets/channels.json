@@ -310,10 +310,6 @@
         "title": "NASCAR FULL RACE REPLAYS"
       },
       {
-        "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO",
-        "title": "FULL RACES"
-      },
-      {
         "id": "UUPSc8x8cAdI6-dKk61I4tGA",
         "title": "NASCAR CLASSICS"
       }
@@ -329,11 +325,16 @@
       {
         "id": "UUmocZTBORoEUNd3iaPVSXIw",
         "title": "DIRTVISION"
+      },
+      {
+        "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO",
+        "title": "FLORACING FULL DIRT RACES"
       }
     ],
     "queries": [
       "(\"dirt track\" OR \"sprint car\" OR \"late model\") AND race"
-    ]
+    ],
+    "combine": true
   },
   {
     "number": 40,
