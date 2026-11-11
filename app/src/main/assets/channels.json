@@ -156,8 +156,73 @@
       { "id": "PLtc57NTUizP4xPoPriy2cSXMoTc_3L0fa", "title": "CLASSIC NASCAR FULL RACE REPLAYS" },
       { "id": "PLtc57NTUizP7bkdtz4SLfqNXPbCNdbxmH", "title": "2026 NASCAR CUP FULL RACE REPLAYS" },
       { "id": "PLtc57NTUizP5puz0sL-X83QHZ-6fQgVR-", "title": "NASCAR FULL RACE REPLAYS" },
-      { "id": "UUmocZTBORoEUNd3iaPVSXIw", "title": "DIRTVISION" }
+      { "id": "UUmocZTBORoEUNd3iaPVSXIw", "title": "DIRTVISION" },
+      { "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO", "title": "FULL RACES" },
+      { "id": "UUPSc8x8cAdI6-dKk61I4tGA", "title": "NASCAR CLASSICS" }
     ],
     "queries": [ "(nascar OR \"stock car\" OR \"auto racing\") AND (race OR speedway)" ]
+  },
+
+  {
+    "number": 40, "name": "NICK", "combine": true,
+    "youtube": [
+      { "id": "PLlMCeQ8bjuo3NaLVlIeBhsqYotnmSU0lM", "title": "THE ADVENTURES OF PETE & PETE" },
+      { "id": "PLK4EXt7zO9lqkOnio6fPjn6eHVHJbUc2j", "title": "ROUNDHOUSE" },
+      { "id": "PL37rU_ShZ5p8oD3HmlWZVrk-zD2oksoXJ", "title": "SNICK" },
+      { "id": "PLeBIJmj8B1PAt2Z8EadizFo37J0SzJp7n", "title": "NICK ARCADE" },
+      { "id": "PLTSXusOorxDbNY3XsFfRFBCdmr_bcSt2m", "title": "LEGENDS OF THE HIDDEN TEMPLE" }
+    ],
+    "queries": [ "collection:classic_tv" ]
+  },
+  {
+    "number": 41, "name": "BOB ROSS",
+    "youtube": [
+      { "id": "PLAEQD0ULngi67rwmhrkNjMZKvyCReqDV4", "title": "THE JOY OF PAINTING" }
+    ],
+    "queries": [ "title:(\"joy of painting\") OR title:(\"bob ross\")" ]
+  },
+  {
+    "number": 42, "name": "UNSOLVED",
+    "youtube": [
+      { "id": "v:5CDcgYH0Ot0", "title": "UNSOLVED MYSTERIES" }
+    ],
+    "queries": [ "collection:classic_tv" ]
+  },
+  {
+    "number": 43, "name": "MACYS PARADE",
+    "youtube": [
+      { "id": "PLhkE6nxvA1ZbHhnmaiTqHJ-Cxgjj5pWZz", "title": "MACY'S THANKSGIVING DAY PARADE" }
+    ],
+    "queries": [ "(macys OR \"macy's\") AND parade" ]
+  },
+  {
+    "number": 44, "name": "PEE-WEE",
+    "youtube": [
+      { "id": "PLBrrfZs-ew7Mc_L2G7Vm3V9sIwI7zXbO_", "title": "PEE-WEE" }
+    ],
+    "queries": [ "collection:classic_tv" ]
+  },
+  {
+    "number": 45, "name": "GAME SHOWS", "combine": true,
+    "youtube": [
+      { "id": "PLuKKJ5FR6_i-G3X2qR9kJ6TRri07AKsJe", "title": "GAME SHOWS 1" },
+      { "id": "PLMK_6ky6NNPquQ8vAnN-qCIoHdW1lwpRq", "title": "GAME SHOWS 2" }
+    ],
+    "queries": [ "collection:classic_tv AND subject:game" ]
+  },
+  {
+    "number": 46, "name": "CLEETUS", "combine": true,
+    "youtube": [
+      { "id": "UUh8f8vssLddD2PbnU3Ag_Bw", "title": "CLEETUS MCFARLAND" },
+      { "id": "UUMJbbWyIziiUamP5JKK9yAA", "title": "CLEETUS2 MCFARLAND" }
+    ],
+    "queries": [ "(\"drag racing\" OR nascar) AND race" ]
+  },
+  {
+    "number": 47, "name": "DIRTY MO",
+    "youtube": [
+      { "id": "UUB2r6UX0EJn-i1cgMVqbirg", "title": "DALE JR'S DIRTY MO MEDIA" }
+    ],
+    "queries": [ "(nascar OR \"stock car\") AND race" ]
   }
 ]

@@ -141,6 +141,9 @@ var tag = document.createElement('script');
 tag.src = 'https://www.youtube.com/iframe_api';
 document.head.appendChild(tag);
 
+// An entry written v:VIDEOID is a single video; anything else is a playlist ID.
+function isVid(s) { return s.indexOf('v:') === 0; }
+
 function shuffle(a) {
   for (var i = a.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -152,6 +155,11 @@ function shuffle(a) {
 // Combined mode: load each playlist in turn just to read its video IDs.
 function collectNext() {
   collectToken++;
+  // single videos are added directly; playlists are read below
+  while (collectIdx < LISTS.length && isVid(LISTS[collectIdx])) {
+    collected.push(LISTS[collectIdx].substring(2));
+    collectIdx++;
+  }
   if (collectIdx >= LISTS.length) { finishCollect(); return; }
   var token = collectToken;
   try { player.cuePlaylist({ listType: 'playlist', list: LISTS[collectIdx] }); } catch (x) {}
@@ -182,9 +190,13 @@ function onYouTubeIframeAPIReady() {
     iv_load_policy: 3, fs: 0, disablekb: 1, origin: '__ORIGIN__'
   };
   if (!combine) {
-    vars.listType = 'playlist';
-    vars.list = LISTS[0];
-    vars.loop = 1;
+    if (isVid(LISTS[0])) {
+      vars.videoId = LISTS[0].substring(2);
+    } else {
+      vars.listType = 'playlist';
+      vars.list = LISTS[0];
+      vars.loop = 1;
+    }
   }
   player = new YT.Player('p', {
     width: '100%',
