@@ -81,7 +81,7 @@ class YouTubeView(context: Context) : WebView(context) {
     /** [playlistIds] is one playlist ID, or several separated by commas to combine them. */
     fun playPlaylist(playlistIds: String) {
         ui.removeCallbacks(watchdog)
-        ui.postDelayed(watchdog, 40000L)
+        ui.postDelayed(watchdog, if (playlistIds.contains(",")) 120000L else 40000L)
         loadDataWithBaseURL(
             baseUrl,
             PAGE.replace("__LIST__", playlistIds).replace("__ORIGIN__", baseUrl),
@@ -132,6 +132,7 @@ var player;
 var errs = 0;
 var LISTS = '__LIST__'.split(',');
 var combine = LISTS.length > 1;
+if (combine) shuffle(LISTS);
 var collecting = false;
 var collected = [];
 var collectIdx = 0;
@@ -160,13 +161,13 @@ function collectNext() {
     collected.push(LISTS[collectIdx].substring(2));
     collectIdx++;
   }
-  if (collectIdx >= LISTS.length) { finishCollect(); return; }
+  if (collectIdx >= LISTS.length || collected.length >= 150) { finishCollect(); return; }
   var token = collectToken;
   try { player.cuePlaylist({ listType: 'playlist', list: LISTS[collectIdx] }); } catch (x) {}
   collectIdx++;
   setTimeout(function () {
     if (collecting && token === collectToken) collectNext();
-  }, 9000);
+  }, 6000);
 }
 
 function finishCollect() {
@@ -230,6 +231,7 @@ function onYouTubeIframeAPIReady() {
           errs = 0;
           var t = '';
           try { t = e.target.getVideoData().title; } catch (x) {}
+          try { e.target.setPlaybackQuality('hd720'); } catch (x) {}
           Android.playing(t || '');
         }
       },

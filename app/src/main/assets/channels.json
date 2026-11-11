@@ -1,24 +1,66 @@
 [
-  { "number": 2,  "name": "TOONS",      "query": "collection:classic_cartoons" },
-  { "number": 3,  "name": "MOVIES",     "query": "collection:feature_films" },
-  { "number": 4,  "name": "SCI-FI",     "query": "collection:SciFi_Horror" },
-  { "number": 5,  "name": "CLASSIC TV", "query": "collection:classic_tv" },
-  { "number": 7,  "name": "SILENTS",    "query": "collection:silent_films" },
-  { "number": 9,  "name": "ARCHIVE",    "query": "collection:prelinger" },
-  { "number": 11, "name": "SPACE",      "query": "collection:nasa" },
-  { "number": 13, "name": "NEWS",       "query": "collection:newsandpublicaffairs" },
   {
-    "number": 14, "name": "CN OFFICIAL",
-    "youtube": [
-      { "id": "UUMsgXPD3wzzt8RxHJmXH7hQ", "title": "CARTOON NETWORK OFFICIAL CHANNEL" }
-    ],
-    "queries": [ "collection:classic_cartoons" ]
+    "number": 2,
+    "name": "TOONS",
+    "query": "collection:classic_cartoons"
   },
-
   {
-    "number": 20, "name": "80S HIP HOP", "mix": true,
+    "number": 3,
+    "name": "MOVIES",
+    "query": "collection:feature_films"
+  },
+  {
+    "number": 4,
+    "name": "SCI-FI",
+    "query": "collection:SciFi_Horror"
+  },
+  {
+    "number": 5,
+    "name": "CLASSIC TV",
+    "query": "collection:classic_tv"
+  },
+  {
+    "number": 7,
+    "name": "SILENTS",
+    "query": "collection:silent_films"
+  },
+  {
+    "number": 9,
+    "name": "ARCHIVE",
+    "query": "collection:prelinger"
+  },
+  {
+    "number": 11,
+    "name": "SPACE",
+    "query": "collection:nasa"
+  },
+  {
+    "number": 13,
+    "name": "NEWS",
+    "query": "collection:newsandpublicaffairs"
+  },
+  {
+    "number": 14,
+    "name": "CN OFFICIAL",
     "youtube": [
-      { "id": "PLDQ45hujDIQ3tnQyZWNIrNrHxx63IPULk", "title": "80S HIP HOP VIDEOS" }
+      {
+        "id": "UUMsgXPD3wzzt8RxHJmXH7hQ",
+        "title": "CARTOON NETWORK OFFICIAL CHANNEL"
+      }
+    ],
+    "queries": [
+      "collection:classic_cartoons"
+    ]
+  },
+  {
+    "number": 20,
+    "name": "80S HIP HOP",
+    "mix": true,
+    "youtube": [
+      {
+        "id": "PLDQ45hujDIQ3tnQyZWNIrNrHxx63IPULk",
+        "title": "80S HIP HOP VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND date:[1980-01-01 TO 1989-12-31]",
@@ -26,9 +68,14 @@
     ]
   },
   {
-    "number": 21, "name": "90S HIP HOP", "mix": true,
+    "number": 21,
+    "name": "90S HIP HOP",
+    "mix": true,
     "youtube": [
-      { "id": "PL4xqRMQ2GXalF74aoEoGtf19nIPgzLk8U", "title": "90S HIP HOP VIDEOS" }
+      {
+        "id": "PL4xqRMQ2GXalF74aoEoGtf19nIPgzLk8U",
+        "title": "90S HIP HOP VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (rap OR \"hip hop\" OR hiphop) AND date:[1990-01-01 TO 1999-12-31]",
@@ -36,9 +83,14 @@
     ]
   },
   {
-    "number": 22, "name": "80S SYNTH", "mix": true,
+    "number": 22,
+    "name": "80S SYNTH",
+    "mix": true,
     "youtube": [
-      { "id": "PLD23068125D04AFBE", "title": "80S SYNTH + NEW WAVE VIDEOS" }
+      {
+        "id": "PLD23068125D04AFBE",
+        "title": "80S SYNTH + NEW WAVE VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (synthpop OR \"synth pop\" OR \"new wave\" OR synthwave) AND date:[1980-01-01 TO 1989-12-31]",
@@ -46,10 +98,18 @@
     ]
   },
   {
-    "number": 23, "name": "GRUNGE+METAL", "mix": true,
+    "number": 23,
+    "name": "GRUNGE+METAL",
+    "mix": true,
     "youtube": [
-      { "id": "PLD58ECddxRngHs9gZPQWOCAKwV1hTtYe4", "title": "90S GRUNGE VIDEOS" },
-      { "id": "PLDcxZcf5_wJEugWsP-O62jodc0iYrpg4r", "title": "90S METAL VIDEOS" }
+      {
+        "id": "PLD58ECddxRngHs9gZPQWOCAKwV1hTtYe4",
+        "title": "90S GRUNGE VIDEOS"
+      },
+      {
+        "id": "PLDcxZcf5_wJEugWsP-O62jodc0iYrpg4r",
+        "title": "90S METAL VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (grunge OR \"heavy metal\" OR metal) AND date:[1989-01-01 TO 1999-12-31]",
@@ -57,9 +117,14 @@
     ]
   },
   {
-    "number": 24, "name": "80S POP HITS", "mix": true,
+    "number": 24,
+    "name": "80S POP HITS",
+    "mix": true,
     "youtube": [
-      { "id": "PLGBuKfnErZlDYOaD2bOazzCYvy13ozt7C", "title": "80S POP HITS VIDEOS" }
+      {
+        "id": "PLGBuKfnErZlDYOaD2bOazzCYvy13ozt7C",
+        "title": "80S POP HITS VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND date:[1980-01-01 TO 1989-12-31]",
@@ -67,70 +132,138 @@
     ]
   },
   {
-    "number": 25, "name": "90S POP HITS", "mix": true,
+    "number": 25,
+    "name": "90S POP HITS",
+    "mix": true,
     "youtube": [
-      { "id": "PLGBuKfnErZlAH3yaYBpIXra0HxFGEJKsB", "title": "90S POP HITS VIDEOS" }
+      {
+        "id": "PLGBuKfnErZlAH3yaYBpIXra0HxFGEJKsB",
+        "title": "90S POP HITS VIDEOS"
+      }
     ],
     "queries": [
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND date:[1990-01-01 TO 1999-12-31]",
       "(\"music video\" OR \"music videos\") AND (pop OR \"top 40\" OR hits) AND (1990s OR \"90s\" OR 1994 OR 1995 OR 1996 OR 1997 OR 1998)"
     ]
   },
-
   {
-    "number": 30, "name": "FREE MOVIES",
+    "number": 30,
+    "name": "FREE MOVIES",
     "youtube": [
-      { "id": "PLscnkx6FrkeMTTSBZqmsC6Khech54P2bs", "title": "FILMRISE FREE MOVIES" },
-      { "id": "PLGEvQOL-yCoEWYgfMmozHngZtmRPbUpKX", "title": "PUBLIC DOMAIN MOVIES" },
-      { "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg", "title": "POPCORNFLIX ACTION MOVIES" }
+      {
+        "id": "PLscnkx6FrkeMTTSBZqmsC6Khech54P2bs",
+        "title": "FILMRISE FREE MOVIES"
+      },
+      {
+        "id": "PLGEvQOL-yCoEWYgfMmozHngZtmRPbUpKX",
+        "title": "PUBLIC DOMAIN MOVIES"
+      },
+      {
+        "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg",
+        "title": "POPCORNFLIX ACTION MOVIES"
+      }
     ],
-    "queries": [ "collection:feature_films" ]
+    "queries": [
+      "collection:feature_films"
+    ]
   },
   {
-    "number": 31, "name": "80S-90S FILMS",
+    "number": 31,
+    "name": "80S-90S FILMS",
     "youtube": [
-      { "id": "PLIiI4TlOIndeSqfJt0JRtRtTzk2Ynz0n-", "title": "FREE 1980S MOVIES" },
-      { "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y", "title": "FULL MOON FEATURES FULL MOVIES" }
+      {
+        "id": "PLIiI4TlOIndeSqfJt0JRtRtTzk2Ynz0n-",
+        "title": "FREE 1980S MOVIES"
+      },
+      {
+        "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y",
+        "title": "FULL MOON FEATURES FULL MOVIES"
+      }
     ],
-    "queries": [ "collection:feature_films AND date:[1970-01-01 TO 1999-12-31]" ]
-  },
-
-  {
-    "number": 32, "name": "COMEDY",
-    "youtube": [
-      { "id": "PLsZQnDqnebk5HQZ7Wh5dblxRumNWbzJJC", "title": "POPCORNFLIX COMEDY MOVIES" },
-      { "id": "PLsZQnDqnebk57K1G7_cO7z_Zqzyg3X84R", "title": "POPCORNFLIX ROMANTIC COMEDIES" }
-    ],
-    "queries": [ "collection:feature_films AND subject:comedy", "collection:silent_films AND subject:comedy" ]
-  },
-  {
-    "number": 33, "name": "HORROR",
-    "youtube": [
-      { "id": "PLsZQnDqnebk4P4a5SQHveJQWkooCkY8sn", "title": "POPCORNFLIX HORROR MOVIES" },
-      { "id": "UUv60jacPSiFH49SAT6nu7hQ", "title": "FILMRISE HORROR" }
-    ],
-    "queries": [ "collection:SciFi_Horror AND subject:horror", "collection:SciFi_Horror" ]
+    "queries": [
+      "collection:feature_films AND date:[1970-01-01 TO 1999-12-31]"
+    ]
   },
   {
-    "number": 34, "name": "ACTION",
+    "number": 32,
+    "name": "COMEDY",
     "youtube": [
-      { "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg", "title": "POPCORNFLIX ACTION MOVIES" },
-      { "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L", "title": "POPCORNFLIX THRILLERS" }
+      {
+        "id": "PLsZQnDqnebk5HQZ7Wh5dblxRumNWbzJJC",
+        "title": "POPCORNFLIX COMEDY MOVIES"
+      },
+      {
+        "id": "PLsZQnDqnebk57K1G7_cO7z_Zqzyg3X84R",
+        "title": "POPCORNFLIX ROMANTIC COMEDIES"
+      }
     ],
-    "queries": [ "collection:feature_films AND (subject:action OR subject:adventure)", "collection:feature_films" ]
+    "queries": [
+      "collection:feature_films AND subject:comedy",
+      "collection:silent_films AND subject:comedy"
+    ]
   },
   {
-    "number": 35, "name": "SCI-FI MOVIES",
+    "number": 33,
+    "name": "HORROR",
     "youtube": [
-      { "id": "PLsZQnDqnebk7lTDI6aYGdSVf81_diEKMo", "title": "POPCORNFLIX SCI-FI MOVIES" }
+      {
+        "id": "PLsZQnDqnebk4P4a5SQHveJQWkooCkY8sn",
+        "title": "POPCORNFLIX HORROR MOVIES"
+      },
+      {
+        "id": "UUv60jacPSiFH49SAT6nu7hQ",
+        "title": "FILMRISE HORROR"
+      }
     ],
-    "queries": [ "collection:SciFi_Horror AND subject:\"science fiction\"", "collection:SciFi_Horror" ]
+    "queries": [
+      "collection:SciFi_Horror AND subject:horror",
+      "collection:SciFi_Horror"
+    ]
   },
   {
-    "number": 36, "name": "HALLOWEEN",
+    "number": 34,
+    "name": "ACTION",
     "youtube": [
-      { "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y", "title": "FULL MOON FEATURES HALLOWEEN NIGHT" },
-      { "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L", "title": "POPCORNFLIX CHILLERS + THRILLERS" }
+      {
+        "id": "PLsZQnDqnebk4kN-oGYb2JmTU0ofZHqZTg",
+        "title": "POPCORNFLIX ACTION MOVIES"
+      },
+      {
+        "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L",
+        "title": "POPCORNFLIX THRILLERS"
+      }
+    ],
+    "queries": [
+      "collection:feature_films AND (subject:action OR subject:adventure)",
+      "collection:feature_films"
+    ]
+  },
+  {
+    "number": 35,
+    "name": "SCI-FI MOVIES",
+    "youtube": [
+      {
+        "id": "PLsZQnDqnebk7lTDI6aYGdSVf81_diEKMo",
+        "title": "POPCORNFLIX SCI-FI MOVIES"
+      }
+    ],
+    "queries": [
+      "collection:SciFi_Horror AND subject:\"science fiction\"",
+      "collection:SciFi_Horror"
+    ]
+  },
+  {
+    "number": 36,
+    "name": "HALLOWEEN",
+    "youtube": [
+      {
+        "id": "PLHI-eVeyp_t2tUUPCROOPkXrnK387xI5Y",
+        "title": "FULL MOON FEATURES HALLOWEEN NIGHT"
+      },
+      {
+        "id": "PLsZQnDqnebk4ag9hhJd2AWerYn0CTzK5L",
+        "title": "POPCORNFLIX CHILLERS + THRILLERS"
+      }
     ],
     "queries": [
       "(halloween) AND (cartoon OR film OR movie OR special)",
@@ -138,106 +271,207 @@
     ]
   },
   {
-    "number": 37, "name": "CHRISTMAS",
+    "number": 37,
+    "name": "CHRISTMAS",
     "youtube": [
-      { "id": "PLsZQnDqnebk65mJK8wB63qGidYymXFVkE", "title": "POPCORNFLIX CHRISTMAS MOVIES" },
-      { "id": "PLYCGB2FR2jUrBFcXL5zF1fW4I-3Y-y2hq", "title": "FILMRISE HOLIDAY MOVIES" },
-      { "id": "PLGEvQOL-yCoH93W0d_PnkvwV-k8NL6MRn", "title": "PUBLIC DOMAIN CHRISTMAS CLASSICS" }
+      {
+        "id": "PLsZQnDqnebk65mJK8wB63qGidYymXFVkE",
+        "title": "POPCORNFLIX CHRISTMAS MOVIES"
+      },
+      {
+        "id": "PLYCGB2FR2jUrBFcXL5zF1fW4I-3Y-y2hq",
+        "title": "FILMRISE HOLIDAY MOVIES"
+      },
+      {
+        "id": "PLGEvQOL-yCoH93W0d_PnkvwV-k8NL6MRn",
+        "title": "PUBLIC DOMAIN CHRISTMAS CLASSICS"
+      }
     ],
     "queries": [
       "(christmas OR xmas) AND (cartoon OR film OR movie OR special)",
       "(santa OR \"holiday special\") AND (cartoon OR film OR movie)"
     ]
   },
-
   {
-    "number": 38, "name": "RACING", "combine": true,
+    "number": 38,
+    "name": "RACING",
+    "combine": true,
     "youtube": [
-      { "id": "PLtc57NTUizP4xPoPriy2cSXMoTc_3L0fa", "title": "CLASSIC NASCAR FULL RACE REPLAYS" },
-      { "id": "PLtc57NTUizP7bkdtz4SLfqNXPbCNdbxmH", "title": "2026 NASCAR CUP FULL RACE REPLAYS" },
-      { "id": "PLtc57NTUizP5puz0sL-X83QHZ-6fQgVR-", "title": "NASCAR FULL RACE REPLAYS" },
-      { "id": "UUmocZTBORoEUNd3iaPVSXIw", "title": "DIRTVISION" },
-      { "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO", "title": "FULL RACES" },
-      { "id": "UUPSc8x8cAdI6-dKk61I4tGA", "title": "NASCAR CLASSICS" }
+      {
+        "id": "PLtc57NTUizP4xPoPriy2cSXMoTc_3L0fa",
+        "title": "CLASSIC NASCAR FULL RACE REPLAYS"
+      },
+      {
+        "id": "PLtc57NTUizP7bkdtz4SLfqNXPbCNdbxmH",
+        "title": "2026 NASCAR CUP FULL RACE REPLAYS"
+      },
+      {
+        "id": "PLtc57NTUizP5puz0sL-X83QHZ-6fQgVR-",
+        "title": "NASCAR FULL RACE REPLAYS"
+      },
+      {
+        "id": "UUmocZTBORoEUNd3iaPVSXIw",
+        "title": "DIRTVISION"
+      },
+      {
+        "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO",
+        "title": "FULL RACES"
+      },
+      {
+        "id": "UUPSc8x8cAdI6-dKk61I4tGA",
+        "title": "NASCAR CLASSICS"
+      }
     ],
-    "queries": [ "(nascar OR \"stock car\" OR \"auto racing\") AND (race OR speedway)" ]
-  },
-
-  {
-    "number": 40, "name": "NICK", "combine": true,
-    "youtube": [
-      { "id": "PLlMCeQ8bjuo3NaLVlIeBhsqYotnmSU0lM", "title": "THE ADVENTURES OF PETE & PETE" },
-      { "id": "PLK4EXt7zO9lqkOnio6fPjn6eHVHJbUc2j", "title": "ROUNDHOUSE" },
-      { "id": "PL37rU_ShZ5p8oD3HmlWZVrk-zD2oksoXJ", "title": "SNICK" },
-      { "id": "PLeBIJmj8B1PAt2Z8EadizFo37J0SzJp7n", "title": "NICK ARCADE" },
-      { "id": "PLTSXusOorxDbNY3XsFfRFBCdmr_bcSt2m", "title": "LEGENDS OF THE HIDDEN TEMPLE" },
-      { "id": "PLQZlD6XDfqxQ", "title": "ARE YOU AFRAID OF THE DARK?" }
-    ],
-    "queries": [ "collection:classic_tv" ]
-  },
-  {
-    "number": 41, "name": "BOB ROSS",
-    "youtube": [
-      { "id": "PLAEQD0ULngi67rwmhrkNjMZKvyCReqDV4", "title": "THE JOY OF PAINTING" }
-    ],
-    "queries": [ "title:(\"joy of painting\") OR title:(\"bob ross\")" ]
-  },
-  {
-    "number": 42, "name": "UNSOLVED",
-    "youtube": [
-      { "id": "v:5CDcgYH0Ot0", "title": "UNSOLVED MYSTERIES" }
-    ],
-    "queries": [ "collection:classic_tv" ]
+    "queries": [
+      "(nascar OR \"stock car\" OR \"auto racing\") AND (race OR speedway)"
+    ]
   },
   {
-    "number": 43, "name": "MACYS PARADE",
+    "number": 40,
+    "name": "NICK",
+    "combine": true,
     "youtube": [
-      { "id": "PLhkE6nxvA1ZbHhnmaiTqHJ-Cxgjj5pWZz", "title": "MACY'S THANKSGIVING DAY PARADE" }
+      {
+        "id": "PLlMCeQ8bjuo3NaLVlIeBhsqYotnmSU0lM",
+        "title": "THE ADVENTURES OF PETE & PETE"
+      },
+      {
+        "id": "PLK4EXt7zO9lqkOnio6fPjn6eHVHJbUc2j",
+        "title": "ROUNDHOUSE"
+      },
+      {
+        "id": "PL37rU_ShZ5p8oD3HmlWZVrk-zD2oksoXJ",
+        "title": "SNICK"
+      },
+      {
+        "id": "PLeBIJmj8B1PAt2Z8EadizFo37J0SzJp7n",
+        "title": "NICK ARCADE"
+      },
+      {
+        "id": "PLTSXusOorxDbNY3XsFfRFBCdmr_bcSt2m",
+        "title": "LEGENDS OF THE HIDDEN TEMPLE"
+      },
+      {
+        "id": "PLQZlD6XDfqxQ",
+        "title": "ARE YOU AFRAID OF THE DARK?"
+      }
     ],
-    "queries": [ "(macys OR \"macy's\") AND parade" ]
+    "queries": [
+      "collection:classic_tv"
+    ]
   },
   {
-    "number": 44, "name": "PEE-WEE",
+    "number": 41,
+    "name": "BOB ROSS",
     "youtube": [
-      { "id": "PLBrrfZs-ew7Mc_L2G7Vm3V9sIwI7zXbO_", "title": "PEE-WEE" }
+      {
+        "id": "PLAEQD0ULngi67rwmhrkNjMZKvyCReqDV4",
+        "title": "THE JOY OF PAINTING"
+      }
     ],
-    "queries": [ "collection:classic_tv" ]
+    "queries": [
+      "title:(\"joy of painting\") OR title:(\"bob ross\")"
+    ]
   },
   {
-    "number": 45, "name": "GAME SHOWS", "combine": true,
+    "number": 42,
+    "name": "UNSOLVED",
     "youtube": [
-      { "id": "PLuKKJ5FR6_i-G3X2qR9kJ6TRri07AKsJe", "title": "GAME SHOWS 1" },
-      { "id": "PLMK_6ky6NNPquQ8vAnN-qCIoHdW1lwpRq", "title": "GAME SHOWS 2" }
+      {
+        "id": "v:5CDcgYH0Ot0",
+        "title": "UNSOLVED MYSTERIES"
+      }
     ],
-    "queries": [ "collection:classic_tv AND subject:game" ]
+    "queries": [
+      "collection:classic_tv"
+    ]
   },
   {
-    "number": 46, "name": "CLEETUS", "combine": true,
+    "number": 43,
+    "name": "MACYS PARADE",
     "youtube": [
-      { "id": "UUh8f8vssLddD2PbnU3Ag_Bw", "title": "CLEETUS MCFARLAND" },
-      { "id": "UUMJbbWyIziiUamP5JKK9yAA", "title": "CLEETUS2 MCFARLAND" }
+      {
+        "id": "PLhkE6nxvA1ZbHhnmaiTqHJ-Cxgjj5pWZz",
+        "title": "MACY'S THANKSGIVING DAY PARADE"
+      }
     ],
-    "queries": [ "(\"drag racing\" OR nascar) AND race" ]
+    "queries": [
+      "(macys OR \"macy's\") AND parade"
+    ]
   },
   {
-    "number": 47, "name": "DIRTY MO",
+    "number": 44,
+    "name": "PEE-WEE",
     "youtube": [
-      { "id": "UUB2r6UX0EJn-i1cgMVqbirg", "title": "DALE JR'S DIRTY MO MEDIA" }
+      {
+        "id": "PLBrrfZs-ew7Mc_L2G7Vm3V9sIwI7zXbO_",
+        "title": "PEE-WEE"
+      }
     ],
-    "queries": [ "(nascar OR \"stock car\") AND race" ]
+    "queries": [
+      "collection:classic_tv"
+    ]
   },
   {
-    "number": 48, "name": "KENNY V SPENNY",
+    "number": 45,
+    "name": "GAME SHOWS",
+    "combine": true,
     "youtube": [
-      { "id": "PLWu2_qpm7Wug", "title": "KENNY VS. SPENNY" }
+      {
+        "id": "PLuKKJ5FR6_i-G3X2qR9kJ6TRri07AKsJe",
+        "title": "GAME SHOWS 1"
+      },
+      {
+        "id": "PLMK_6ky6NNPquQ8vAnN-qCIoHdW1lwpRq",
+        "title": "GAME SHOWS 2"
+      }
     ],
-    "queries": [ "collection:classic_tv" ]
+    "queries": [
+      "collection:classic_tv AND subject:game"
+    ]
   },
   {
-    "number": 49, "name": "ROSEANNE",
+    "number": 46,
+    "name": "CLEETUS",
+    "combine": true,
     "youtube": [
-      { "id": "PLSWfyL5TLg_U", "title": "ROSEANNE" }
+      {
+        "id": "UUh8f8vssLddD2PbnU3Ag_Bw",
+        "title": "CLEETUS MCFARLAND"
+      },
+      {
+        "id": "UUMJbbWyIziiUamP5JKK9yAA",
+        "title": "CLEETUS2 MCFARLAND"
+      }
     ],
-    "queries": [ "collection:classic_tv" ]
+    "queries": [
+      "(\"drag racing\" OR nascar) AND race"
+    ]
+  },
+  {
+    "number": 47,
+    "name": "DIRTY MO",
+    "youtube": [
+      {
+        "id": "UUB2r6UX0EJn-i1cgMVqbirg",
+        "title": "DALE JR'S DIRTY MO MEDIA"
+      }
+    ],
+    "queries": [
+      "(nascar OR \"stock car\") AND race"
+    ]
+  },
+  {
+    "number": 48,
+    "name": "KENNY V SPENNY",
+    "youtube": [
+      {
+        "id": "PLWu2_qpm7Wug",
+        "title": "KENNY VS. SPENNY"
+      }
+    ],
+    "queries": [
+      "collection:classic_tv"
+    ]
   }
 ]

@@ -124,8 +124,19 @@ class GuideView(context: Context) : View(context) {
             windowStart = nf
             if (selTime < windowStart) selTime = now
         }
-        invalidate()
+        // Redraw only when something visible changes (clock minute, banner on/off),
+        // not every second: full-screen redraws over video are what made the UI laggy.
+        val minute = now / 60000L
+        val bannerOn = now < bannerUntil
+        if (minute != lastMinute || bannerOn != lastBannerOn) {
+            lastMinute = minute
+            lastBannerOn = bannerOn
+            invalidate()
+        }
     }
+
+    private var lastMinute = 0L
+    private var lastBannerOn = false
 
     // ---------- layout ----------
 
