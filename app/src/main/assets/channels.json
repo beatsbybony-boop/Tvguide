@@ -294,7 +294,7 @@
   },
   {
     "number": 38,
-    "name": "RACING",
+    "name": "NASCAR",
     "combine": true,
     "youtube": [
       {
@@ -310,10 +310,6 @@
         "title": "NASCAR FULL RACE REPLAYS"
       },
       {
-        "id": "UUmocZTBORoEUNd3iaPVSXIw",
-        "title": "DIRTVISION"
-      },
-      {
         "id": "PL2CB85GPyA7DDJMO5Yv3zQ5Twgu8WppvO",
         "title": "FULL RACES"
       },
@@ -324,6 +320,19 @@
     ],
     "queries": [
       "(nascar OR \"stock car\" OR \"auto racing\") AND (race OR speedway)"
+    ]
+  },
+  {
+    "number": 39,
+    "name": "DIRT RACING",
+    "youtube": [
+      {
+        "id": "UUmocZTBORoEUNd3iaPVSXIw",
+        "title": "DIRTVISION"
+      }
+    ],
+    "queries": [
+      "(\"dirt track\" OR \"sprint car\" OR \"late model\") AND race"
     ]
   },
   {

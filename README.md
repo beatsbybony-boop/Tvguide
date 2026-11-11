@@ -27,8 +27,8 @@ Channels 32-37 are genre movie channels: Comedy, Horror, Action, Sci-Fi Movies,
 Halloween and Christmas, built from free-movie playlists (Popcornflix, FilmRise,
 Full Moon Features, public-domain collections) with Internet Archive fallbacks.
 
-Channel 38 (Racing) combines and shuffles NASCAR's official full race replay
-playlists. A channel with `"combine": true` merges all its playlists into one
+Channel 38 (NASCAR) combines and shuffles NASCAR full race replay
+playlists; channel 39 (Dirt Racing) plays DirtVision. A channel with `"combine": true` merges all its playlists into one
 shuffled stream; to add more races, add playlist IDs to its `youtube` list.
 
 Channels 40-51: Nick (combined shuffle of several Nick shows), Bob Ross, Unsolved
