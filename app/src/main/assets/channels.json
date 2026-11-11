@@ -170,7 +170,8 @@
       { "id": "PLK4EXt7zO9lqkOnio6fPjn6eHVHJbUc2j", "title": "ROUNDHOUSE" },
       { "id": "PL37rU_ShZ5p8oD3HmlWZVrk-zD2oksoXJ", "title": "SNICK" },
       { "id": "PLeBIJmj8B1PAt2Z8EadizFo37J0SzJp7n", "title": "NICK ARCADE" },
-      { "id": "PLTSXusOorxDbNY3XsFfRFBCdmr_bcSt2m", "title": "LEGENDS OF THE HIDDEN TEMPLE" }
+      { "id": "PLTSXusOorxDbNY3XsFfRFBCdmr_bcSt2m", "title": "LEGENDS OF THE HIDDEN TEMPLE" },
+      { "id": "PLQZlD6XDfqxQ", "title": "ARE YOU AFRAID OF THE DARK?" }
     ],
     "queries": [ "collection:classic_tv" ]
   },
@@ -224,5 +225,19 @@
       { "id": "UUB2r6UX0EJn-i1cgMVqbirg", "title": "DALE JR'S DIRTY MO MEDIA" }
     ],
     "queries": [ "(nascar OR \"stock car\") AND race" ]
+  },
+  {
+    "number": 48, "name": "KENNY V SPENNY",
+    "youtube": [
+      { "id": "PLWu2_qpm7Wug", "title": "KENNY VS. SPENNY" }
+    ],
+    "queries": [ "collection:classic_tv" ]
+  },
+  {
+    "number": 49, "name": "ROSEANNE",
+    "youtube": [
+      { "id": "PLSWfyL5TLg_U", "title": "ROSEANNE" }
+    ],
+    "queries": [ "collection:classic_tv" ]
   }
 ]
