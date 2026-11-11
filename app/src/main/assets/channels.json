@@ -155,7 +155,8 @@
     "youtube": [
       { "id": "PLtc57NTUizP4xPoPriy2cSXMoTc_3L0fa", "title": "CLASSIC NASCAR FULL RACE REPLAYS" },
       { "id": "PLtc57NTUizP7bkdtz4SLfqNXPbCNdbxmH", "title": "2026 NASCAR CUP FULL RACE REPLAYS" },
-      { "id": "PLtc57NTUizP5puz0sL-X83QHZ-6fQgVR-", "title": "NASCAR FULL RACE REPLAYS" }
+      { "id": "PLtc57NTUizP5puz0sL-X83QHZ-6fQgVR-", "title": "NASCAR FULL RACE REPLAYS" },
+      { "id": "UUmocZTBORoEUNd3iaPVSXIw", "title": "DIRTVISION" }
     ],
     "queries": [ "(nascar OR \"stock car\" OR \"auto racing\") AND (race OR speedway)" ]
   }
