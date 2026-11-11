@@ -27,6 +27,10 @@ Channels 32-37 are genre movie channels: Comedy, Horror, Action, Sci-Fi Movies,
 Halloween and Christmas, built from free-movie playlists (Popcornflix, FilmRise,
 Full Moon Features, public-domain collections) with Internet Archive fallbacks.
 
+Channel 38 (Racing) combines and shuffles NASCAR's official full race replay
+playlists. A channel with `"combine": true` merges all its playlists into one
+shuffled stream; to add more races, add playlist IDs to its `youtube` list.
+
 To add your own YouTube playlist as a channel, add an entry to `channels.json` with
 the playlist ID (the part after `list=`). The playlist must be Public or Unlisted.
 
