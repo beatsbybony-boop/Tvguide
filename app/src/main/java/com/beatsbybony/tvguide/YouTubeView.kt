@@ -190,7 +190,7 @@ function finishCollect() {
 function onYouTubeIframeAPIReady() {
   var vars = {
     autoplay: 1, controls: 0, rel: 0, playsinline: 1, modestbranding: 1,
-    iv_load_policy: 3, fs: 0, disablekb: 1, origin: '__ORIGIN__'
+    iv_load_policy: 3, cc_load_policy: 0, fs: 0, disablekb: 1, origin: '__ORIGIN__'
   };
   if (!combine) {
     if (isVid(LISTS[0])) {
@@ -229,15 +229,16 @@ function onYouTubeIframeAPIReady() {
           collectNext();
           return;
         }
-        // 3 = buffering, 1 = playing: keep asking for 480p so the Fire Stick Lite can keep up
-        if (e.data === 1 || e.data === 3) {
-          try { e.target.setPlaybackQuality('large'); } catch (x) {}
-        }
         if (e.data === 1) {
           errs = 0;
           var t = '';
           try { t = e.target.getVideoData().title; } catch (x) {}
-          Android.playing(t || '');
+          // captions off, every video
+          try { e.target.unloadModule('captions'); } catch (x) {}
+          try { e.target.unloadModule('cc'); } catch (x) {}
+          var q = '';
+          try { q = e.target.getPlaybackQuality(); } catch (x) {}
+          Android.playing((t || '') + (q ? '  [' + q + ']' : ''));
         }
       },
       onError: function (e) {
