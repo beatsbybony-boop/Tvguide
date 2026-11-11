@@ -227,11 +227,14 @@ function onYouTubeIframeAPIReady() {
           collectNext();
           return;
         }
+        // 3 = buffering, 1 = playing: keep asking for 480p so the Fire Stick Lite can keep up
+        if (e.data === 1 || e.data === 3) {
+          try { e.target.setPlaybackQuality('large'); } catch (x) {}
+        }
         if (e.data === 1) {
           errs = 0;
           var t = '';
           try { t = e.target.getVideoData().title; } catch (x) {}
-          try { e.target.setPlaybackQuality('hd720'); } catch (x) {}
           Android.playing(t || '');
         }
       },
