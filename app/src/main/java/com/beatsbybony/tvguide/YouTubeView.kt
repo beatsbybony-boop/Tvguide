@@ -10,10 +10,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 
 /**
- * Plays a YouTube playlist through YouTube's own embedded player (the official
- * IFrame API), shuffled and starting at a random video. Videos that can't be
- * embedded are skipped; if the whole playlist fails, [onFailed] is called with a
- * short reason so the app can fall back to another source.
+ * Plays YouTube playlists through YouTube's own embedded player (the official
+ * IFrame API), shuffled and starting at a random video. Given one playlist ID it
+ * shuffles that playlist; given several IDs separated by commas it reads every video
+ * from all of them, mixes them into one shuffled list and plays that. Videos that
+ * can't be embedded are skipped; if nothing plays at all, [onFailed] is called with
+ * a short reason so the app can fall back to another source.
  *
  * YouTube requires embedded players to identify the app: the page's base URL (which
  * becomes the HTTP Referer) must be https:// followed by the app ID.
@@ -76,12 +78,13 @@ class YouTubeView(context: Context) : WebView(context) {
         }
     }
 
-    fun playPlaylist(playlistId: String) {
+    /** [playlistIds] is one playlist ID, or several separated by commas to combine them. */
+    fun playPlaylist(playlistIds: String) {
         ui.removeCallbacks(watchdog)
-        ui.postDelayed(watchdog, 25000L)
+        ui.postDelayed(watchdog, 40000L)
         loadDataWithBaseURL(
             baseUrl,
-            PAGE.replace("__LIST__", playlistId).replace("__ORIGIN__", baseUrl),
+            PAGE.replace("__LIST__", playlistIds).replace("__ORIGIN__", baseUrl),
             "text/html",
             "utf-8",
             null
@@ -127,21 +130,74 @@ class YouTubeView(context: Context) : WebView(context) {
 <script>
 var player;
 var errs = 0;
+var LISTS = '__LIST__'.split(',');
+var combine = LISTS.length > 1;
+var collecting = false;
+var collected = [];
+var collectIdx = 0;
+var collectToken = 0;
+
 var tag = document.createElement('script');
 tag.src = 'https://www.youtube.com/iframe_api';
 document.head.appendChild(tag);
+
+function shuffle(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+// Combined mode: load each playlist in turn just to read its video IDs.
+function collectNext() {
+  collectToken++;
+  if (collectIdx >= LISTS.length) { finishCollect(); return; }
+  var token = collectToken;
+  try { player.cuePlaylist({ listType: 'playlist', list: LISTS[collectIdx] }); } catch (x) {}
+  collectIdx++;
+  setTimeout(function () {
+    if (collecting && token === collectToken) collectNext();
+  }, 9000);
+}
+
+function finishCollect() {
+  collecting = false;
+  var seen = {};
+  var ids = [];
+  for (var i = 0; i < collected.length; i++) {
+    var v = collected[i];
+    if (v && !seen[v]) { seen[v] = 1; ids.push(v); }
+  }
+  if (ids.length === 0) { Android.failed(100); return; }
+  shuffle(ids);
+  ids = ids.slice(0, 200);
+  player.loadPlaylist(ids, 0, 0);
+  try { player.setLoop(true); } catch (x) {}
+}
+
 function onYouTubeIframeAPIReady() {
+  var vars = {
+    autoplay: 1, controls: 0, rel: 0, playsinline: 1, modestbranding: 1,
+    iv_load_policy: 3, fs: 0, disablekb: 1, origin: '__ORIGIN__'
+  };
+  if (!combine) {
+    vars.listType = 'playlist';
+    vars.list = LISTS[0];
+    vars.loop = 1;
+  }
   player = new YT.Player('p', {
     width: '100%',
     height: '100%',
     host: 'https://www.youtube.com',
-    playerVars: {
-      listType: 'playlist', list: '__LIST__', autoplay: 1, controls: 0, rel: 0,
-      playsinline: 1, modestbranding: 1, iv_load_policy: 3, fs: 0, disablekb: 1,
-      loop: 1, origin: '__ORIGIN__'
-    },
+    playerVars: vars,
     events: {
       onReady: function (e) {
+        if (combine) {
+          collecting = true;
+          collectNext();
+          return;
+        }
         try {
           e.target.setShuffle(true);
           var n = e.target.getPlaylist().length;
@@ -150,6 +206,14 @@ function onYouTubeIframeAPIReady() {
         e.target.playVideo();
       },
       onStateChange: function (e) {
+        if (collecting && e.data === 5) {
+          try {
+            var got = e.target.getPlaylist();
+            if (got) collected = collected.concat(got);
+          } catch (x) {}
+          collectNext();
+          return;
+        }
         if (e.data === 1) {
           errs = 0;
           var t = '';
@@ -158,6 +222,7 @@ function onYouTubeIframeAPIReady() {
         }
       },
       onError: function (e) {
+        if (collecting) { collectNext(); return; }
         errs++;
         // 2 = bad request, 100 = playlist gone, 153 = player identity problem: no point skipping ahead
         if (errs > 4 || e.data === 2 || e.data === 100 || e.data === 153) {

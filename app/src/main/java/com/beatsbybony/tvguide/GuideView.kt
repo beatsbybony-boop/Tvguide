@@ -216,7 +216,7 @@ class GuideView(context: Context) : View(context) {
             drawLabel(c, "CH " + ch.number + "  " + ch.name, px0, margin + ph * 0.56f, ph * 0.11f, cYellow, pw)
             if (a != null) {
                 drawLabel(c, a.program.title.uppercase(Locale.US), px0, margin + ph * 0.73f, ph * 0.14f, Color.WHITE, pw)
-                val range = if (a.program.youtubeId != null) "NON-STOP MUSIC VIDEOS"
+                val range = if (a.program.youtubeId != null) "NON-STOP SHUFFLE"
                 else timeFmt.format(Date(a.startMs)) + " - " + timeFmt.format(Date(a.endMs))
                 drawLabel(c, range, px0, margin + ph * 0.90f, ph * 0.11f, cLight, pw)
             } else {

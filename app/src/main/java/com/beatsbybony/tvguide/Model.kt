@@ -49,7 +49,9 @@ class Channel(
     val queries: List<String>,
     val mix: Boolean,
     /** YouTube playlists for this channel (tried first); queries are the Archive fallback. */
-    val youtube: List<YtList> = emptyList()
+    val youtube: List<YtList> = emptyList(),
+    /** Merge all of the YouTube playlists into one shuffled stream instead of alternating blocks. */
+    val combine: Boolean = false
 ) {
     /** True once YouTube could not be played and the channel switched to the Archive. */
     @Volatile

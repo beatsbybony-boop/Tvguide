@@ -54,7 +54,7 @@ object ChannelConfig {
                     yt.add(YtList(y.getString("id"), y.getString("title")))
                 }
             }
-            out.add(Channel(o.getInt("number"), o.getString("name"), queries, o.optBoolean("mix", false), yt))
+            out.add(Channel(o.getInt("number"), o.getString("name"), queries, o.optBoolean("mix", false), yt, o.optBoolean("combine", false)))
         }
         return out
     }
@@ -119,8 +119,14 @@ class ChannelLoader(private val onChanged: () -> Unit) {
 
     /** One long program per playlist, so the guide shows the playlist across the whole grid. */
     private fun youtubePrograms(ch: Channel): List<Program> {
-        val ms = if (ch.youtube.size == 1) 30L * 24 * 3600 * 1000 else 3L * 3600 * 1000
         val out = ArrayList<Program>()
+        if (ch.combine && ch.youtube.size > 1) {
+            // One program whose id is a comma-separated list; the player merges and shuffles them.
+            val ids = ch.youtube.joinToString(",") { it.id }
+            out.add(Program("yt-combined-" + ch.number, ch.name + " NON-STOP", emptyList(), ids, 30L * 24 * 3600 * 1000))
+            return out
+        }
+        val ms = if (ch.youtube.size == 1) 30L * 24 * 3600 * 1000 else 3L * 3600 * 1000
         for (y in ch.youtube) out.add(Program("yt-" + y.id, y.title, emptyList(), y.id, ms))
         return out
     }
