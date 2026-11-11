@@ -31,7 +31,7 @@ Channel 38 (Racing) combines and shuffles NASCAR's official full race replay
 playlists. A channel with `"combine": true` merges all its playlists into one
 shuffled stream; to add more races, add playlist IDs to its `youtube` list.
 
-Channels 40-48: Nick (combined shuffle of several Nick shows), Bob Ross, Unsolved
+Channels 40-51: Nick (combined shuffle of several Nick shows), Bob Ross, Unsolved
 Mysteries, Macy's Parade, Pee-wee, Game Shows, Cleetus and Dirty Mo. A `youtube`
 entry can be a playlist ID, a channel's uploads (a playlist ID starting `UU`, i.e.
 the channel ID with `UC` changed to `UU`), or a single video written `v:VIDEOID`.

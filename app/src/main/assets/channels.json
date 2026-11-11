@@ -473,5 +473,44 @@
     "queries": [
       "collection:classic_tv"
     ]
+  },
+  {
+    "number": 49,
+    "name": "TOONAMI",
+    "youtube": [
+      {
+        "id": "PLIg78070Iptk",
+        "title": "TOONAMI"
+      }
+    ],
+    "queries": [
+      "collection:classic_cartoons"
+    ]
+  },
+  {
+    "number": 50,
+    "name": "COMEDY TV",
+    "youtube": [
+      {
+        "id": "PLYWpgKFZj1qk",
+        "title": "COMEDY TV SHOWS"
+      }
+    ],
+    "queries": [
+      "collection:classic_tv"
+    ]
+  },
+  {
+    "number": 51,
+    "name": "SATURDAY AM",
+    "youtube": [
+      {
+        "id": "PLTySepnUnoeU",
+        "title": "SATURDAY MORNING CARTOONS"
+      }
+    ],
+    "queries": [
+      "collection:classic_cartoons"
+    ]
   }
 ]

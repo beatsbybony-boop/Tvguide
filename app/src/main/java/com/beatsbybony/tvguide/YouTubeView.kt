@@ -81,7 +81,7 @@ class YouTubeView(context: Context) : WebView(context) {
     /** [playlistIds] is one playlist ID, or several separated by commas to combine them. */
     fun playPlaylist(playlistIds: String) {
         ui.removeCallbacks(watchdog)
-        ui.postDelayed(watchdog, if (playlistIds.contains(",")) 120000L else 40000L)
+        ui.postDelayed(watchdog, if (playlistIds.startsWith("v:")) 40000L else 120000L)
         loadDataWithBaseURL(
             baseUrl,
             PAGE.replace("__LIST__", playlistIds).replace("__ORIGIN__", baseUrl),
@@ -131,8 +131,10 @@ class YouTubeView(context: Context) : WebView(context) {
 var player;
 var errs = 0;
 var LISTS = '__LIST__'.split(',');
-var combine = LISTS.length > 1;
-if (combine) shuffle(LISTS);
+// Everything except a single v:VIDEO goes through the ID-list path (read the playlists, shuffle,
+// play the list): it plays smoothly on the Fire Stick Lite, unlike a native playlist.
+var combine = LISTS.length > 1 || !isVid(LISTS[0]);
+if (LISTS.length > 1) shuffle(LISTS);
 var collecting = false;
 var collected = [];
 var collectIdx = 0;

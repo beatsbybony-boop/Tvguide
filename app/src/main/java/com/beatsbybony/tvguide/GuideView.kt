@@ -3,6 +3,8 @@ package com.beatsbybony.tvguide
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -49,14 +51,20 @@ class GuideView(context: Context) : View(context) {
     private var bannerLine2 = ""
     private var bannerUntil = 0L
 
-    private val cTop = 0xFF0A1580.toInt()
-    private val cHeader = 0xFF3A1F9E.toInt()
-    private val cLabel = 0xFF081060.toInt()
-    private val cCellA = 0xFF1E3AC8.toInt()
-    private val cCellB = 0xFF1830A8.toInt()
-    private val cBorder = 0xFF9FB0FF.toInt()
+    // Vaporwave palette: deep purple, hot pink, neon cyan, sunset yellow.
+    private val cTop = 0xFF1B0840.toInt()
+    private val cTopEnd = 0xFF7A1A8C.toInt()
+    private val cHeader = 0xFF2A0F5C.toInt()
+    private val cLabel = 0xFF14072E.toInt()
+    private val cCellA = 0xFF331680.toInt()
+    private val cCellB = 0xFF28105F.toInt()
+    private val cBorder = 0xFF35E0FF.toInt()
+    private val cPink = 0xFFFF2E9A.toInt()
     private val cYellow = 0xFFFFD21F.toInt()
-    private val cLight = 0xFFB8C4FF.toInt()
+    private val cLight = 0xFFFF9AD5.toInt()
+
+    private var topShader: LinearGradient? = null
+    private var topShaderH = -1f
 
     private val fill = Paint(Paint.ANTI_ALIAS_FLAG)
     private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
@@ -188,16 +196,25 @@ class GuideView(context: Context) : View(context) {
 
     private fun drawTop(c: Canvas, w: Float, now: Long) {
         val vr = videoRect
-        fill.color = cTop
+        if (topShader == null || topShaderH != topH) {
+            topShader = LinearGradient(0f, 0f, 0f, topH, cTop, cTopEnd, Shader.TileMode.CLAMP)
+            topShaderH = topH
+        }
+        fill.shader = topShader
         // Fill everything except the video window so the video shows through the hole.
         c.drawRect(0f, 0f, vr.left.toFloat(), topH, fill)
         c.drawRect(vr.left.toFloat(), 0f, vr.right.toFloat(), vr.top.toFloat(), fill)
         c.drawRect(vr.left.toFloat(), vr.bottom.toFloat(), vr.right.toFloat(), topH, fill)
         c.drawRect(vr.right.toFloat(), 0f, w, topH, fill)
+        fill.shader = null
 
+        // neon frame around the preview window: pink glow outside, cyan line inside
+        stroke.color = cPink
+        stroke.strokeWidth = 10f
+        c.drawRect(vr.left - 8f, vr.top - 8f, vr.right + 8f, vr.bottom + 8f, stroke)
         stroke.color = cBorder
-        stroke.strokeWidth = 6f
-        c.drawRect(vr.left - 3f, vr.top - 3f, vr.right + 3f, vr.bottom + 3f, stroke)
+        stroke.strokeWidth = 4f
+        c.drawRect(vr.left - 2f, vr.top - 2f, vr.right + 2f, vr.bottom + 2f, stroke)
 
         val px0 = vr.right + margin
         val px1 = w - margin
@@ -216,7 +233,7 @@ class GuideView(context: Context) : View(context) {
         }
         drawLabel(c, dateFmt.format(d).uppercase(Locale.US), px0, margin + ph * 0.36f, ph * 0.11f, cLight, pw)
 
-        stroke.color = cBorder
+        stroke.color = cPink
         stroke.strokeWidth = 3f
         c.drawLine(px0, margin + ph * 0.46f, px1, margin + ph * 0.46f, stroke)
 
@@ -251,7 +268,10 @@ class GuideView(context: Context) : View(context) {
         // Time header
         fill.color = cHeader
         c.drawRect(0f, topH, w, rowsTop, fill)
-        drawLabel(c, "TV GUIDE", 16f, topH + headerH / 2f, headerH * 0.5f, cYellow, labelW - 24f)
+        drawLabel(c, "THE GUIDE", 16f, topH + headerH / 2f, headerH * 0.5f, cPink, labelW - 24f)
+        stroke.color = cPink
+        stroke.strokeWidth = 3f
+        c.drawLine(0f, rowsTop, w, rowsTop, stroke)
         stroke.color = cBorder
         stroke.strokeWidth = 2f
         for (k in 0 until 3) {
@@ -279,8 +299,8 @@ class GuideView(context: Context) : View(context) {
             fill.color = cLabel
             c.drawRect(2f, y0 + 2f, labelW - 2f, y1 - 2f, fill)
             if (rowSelected) {
-                stroke.color = cYellow
-                stroke.strokeWidth = 3f
+                stroke.color = cPink
+                stroke.strokeWidth = 4f
                 c.drawRect(3f, y0 + 3f, labelW - 3f, y1 - 3f, stroke)
             }
             drawLabel(c, ch.number.toString(), 14f, cy, rowH * 0.46f, cYellow, rowH * 0.9f)
@@ -320,8 +340,8 @@ class GuideView(context: Context) : View(context) {
     ) {
         fill.color = if (selected) cYellow else base
         c.drawRect(x0 + 2f, y0 + 2f, x1 - 2f, y1 - 2f, fill)
-        stroke.color = if (selected) Color.WHITE else cBorder
-        stroke.strokeWidth = if (selected) 4f else 2f
+        stroke.color = if (selected) cPink else cBorder
+        stroke.strokeWidth = if (selected) 5f else 2f
         c.drawRect(x0 + 2f, y0 + 2f, x1 - 2f, y1 - 2f, stroke)
         val maxW = (x1 - x0) - 24f
         if (maxW > 30f) {
@@ -340,7 +360,7 @@ class GuideView(context: Context) : View(context) {
         val y1 = h * 0.94f
         fill.color = cHeader
         c.drawRect(x0, y0, x1, y1, fill)
-        stroke.color = cBorder
+        stroke.color = cPink
         stroke.strokeWidth = 4f
         c.drawRect(x0, y0, x1, y1, stroke)
         val bh = y1 - y0
